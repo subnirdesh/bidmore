@@ -4,6 +4,10 @@
  */
 package com.bidmore.view;
 
+import com.bidmore.controller.algorithms.SelectionSort;
+import com.bidmore.controller.algorithms.InsertionSort;
+import com.bidmore.controller.algorithms.MergeSort;
+import com.bidmore.controller.algorithms.BinarySearch;
 import java.util.LinkedList;
 import java.util.List;
 import com.bidmore.model.ProductModel;
@@ -15,15 +19,16 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author nirdeshsubedi
  */
-public class mainFrame extends javax.swing.JFrame {
+public class bidmoreapp extends javax.swing.JFrame {
     
     private List<ProductModel> productList;
     private java.awt.CardLayout cardLayout;
+    
 
     /**
      * Creates new form mainFrame
      */
-    public mainFrame() {
+    public bidmoreapp() {
         initComponents();
         initializeLayout(); 
         initializeData(); 
@@ -59,10 +64,9 @@ public class mainFrame extends javax.swing.JFrame {
         productList = new LinkedList<>();
 
         // Registering sample students
-        //
-        registerProduct(new ProductModel(101,"Vinatge Dollar Bill","Notes",400," Iconic Dollar Bill ","Sam Smith","UPCOMING"));
-        registerProduct(new ProductModel(102,"Vinatge Rupee Bill","Notes",500," Iconic Dollar Bill ","Sam Smith","UPCOMING"));
-        registerProduct(new ProductModel(103,"Vinatge Peso Bill","Notes",100," Iconic Dollar Bill","Sam Smith","UPCOMING"));
+        registerProduct(new ProductModel(103,"Old Dollar Coin","Coins",400," Iconic Dollar Bill ","Sam Smith","UPCOMING"));
+        registerProduct(new ProductModel(102,"Rolex Watch","Watch",500," Divers Watch ","Sam Smith","UPCOMING"));
+        registerProduct(new ProductModel(101,"Pokemon NFT","NFT",100,"  NFT for pokemon lovers","Sam Smith","UPCOMING"));
 }
 
     /**
@@ -90,6 +94,11 @@ public class mainFrame extends javax.swing.JFrame {
         spTblProduct = new javax.swing.JScrollPane();
         tblProductList = new javax.swing.JTable();
         lblTableHeader = new javax.swing.JLabel();
+        btnSortByProductId = new javax.swing.JButton();
+        txtFldSearchBar = new java.awt.TextField();
+        jButton1 = new javax.swing.JButton();
+        btnSortByName = new javax.swing.JButton();
+        btnSortByBasePrice = new javax.swing.JButton();
         pnlAdmin = new javax.swing.JPanel();
         pnlAddProduct = new javax.swing.JPanel();
         txtFldProductID = new javax.swing.JTextField();
@@ -254,27 +263,102 @@ public class mainFrame extends javax.swing.JFrame {
         lblTableHeader.setText("   Product Information");
         lblTableHeader.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
+        btnSortByProductId.setBackground(new java.awt.Color(255, 255, 255));
+        btnSortByProductId.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        btnSortByProductId.setForeground(new java.awt.Color(51, 102, 255));
+        btnSortByProductId.setText("Sort by Product Id ");
+        btnSortByProductId.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 102, 255), 2, true));
+        btnSortByProductId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSortByProductIdActionPerformed(evt);
+            }
+        });
+
+        txtFldSearchBar.setBackground(new java.awt.Color(255, 255, 255));
+        txtFldSearchBar.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 12)); // NOI18N
+        txtFldSearchBar.setForeground(new java.awt.Color(51, 102, 255));
+        txtFldSearchBar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFldSearchBarActionPerformed(evt);
+            }
+        });
+
+        jButton1.setBackground(new java.awt.Color(51, 51, 255));
+        jButton1.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 14)); // NOI18N
+        jButton1.setText("Search ");
+        jButton1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 2, true));
+
+        btnSortByName.setBackground(new java.awt.Color(255, 255, 255));
+        btnSortByName.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        btnSortByName.setForeground(new java.awt.Color(51, 102, 255));
+        btnSortByName.setText("Sort by Name ");
+        btnSortByName.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 102, 255), 2, true));
+        btnSortByName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSortByNameActionPerformed(evt);
+            }
+        });
+
+        btnSortByBasePrice.setBackground(new java.awt.Color(255, 255, 255));
+        btnSortByBasePrice.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        btnSortByBasePrice.setForeground(new java.awt.Color(51, 102, 255));
+        btnSortByBasePrice.setText("Sort by Base Price ");
+        btnSortByBasePrice.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 102, 255), 2, true));
+        btnSortByBasePrice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSortByBasePriceActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlProductViewLayout = new javax.swing.GroupLayout(pnlProductView);
         pnlProductView.setLayout(pnlProductViewLayout);
         pnlProductViewLayout.setHorizontalGroup(
             pnlProductViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlProductViewLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(pnlProductViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(spTblProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 975, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlProductViewLayout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(lblTableHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(34, 34, 34)
+                .addComponent(spTblProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 975, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlProductViewLayout.createSequentialGroup()
+                .addGroup(pnlProductViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlProductViewLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(txtFldSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(113, 113, 113)
+                        .addComponent(btnSortByProductId, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlProductViewLayout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addComponent(lblTableHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSortByName, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlProductViewLayout.createSequentialGroup()
+                        .addGap(847, 847, 847)
+                        .addComponent(btnSortByBasePrice, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(64, 64, 64))
         );
         pnlProductViewLayout.setVerticalGroup(
             pnlProductViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlProductViewLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(lblTableHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlProductViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlProductViewLayout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(pnlProductViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtFldSearchBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE))
+                        .addGap(30, 30, 30))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlProductViewLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnSortByProductId, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSortByBasePrice, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addGroup(pnlProductViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTableHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSortByName, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(spTblProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(197, Short.MAX_VALUE))
+                .addContainerGap(111, Short.MAX_VALUE))
         );
 
         tabpaneMain.addTab("View", pnlProductView);
@@ -535,9 +619,7 @@ public class mainFrame extends javax.swing.JFrame {
         pnlMainScreen.setLayout(pnlMainScreenLayout);
         pnlMainScreenLayout.setHorizontalGroup(
             pnlMainScreenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlMainScreenLayout.createSequentialGroup()
-                .addComponent(pnlSideBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+            .addComponent(pnlSideBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(tabpaneMain, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         pnlMainScreenLayout.setVerticalGroup(
@@ -829,6 +911,35 @@ public class mainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnDelete4ActionPerformed
 
+    private void btnSortByProductIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortByProductIdActionPerformed
+        SelectionSort selectionSort = new SelectionSort();
+        loadListToTable(selectionSort.sortByProductId(productList, false));
+        
+    }//GEN-LAST:event_btnSortByProductIdActionPerformed
+
+    private void txtFldSearchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFldSearchBarActionPerformed
+        SelectionSort selectionSort = new SelectionSort();
+        List<ProductModel> sortedList = selectionSort.sortByName(productList, false);
+        
+        BinarySearch search = new BinarySearch();
+        ProductModel searchedData = search.searchByName(txtFldSearchBar.getText().trim(), sortedList, 0, sortedList.size()-1);
+        if(searchedData!=null){
+            System.out.println(searchedData.getName());
+        }else{
+            System.out.println("Product Not Found");
+        }
+    }//GEN-LAST:event_txtFldSearchBarActionPerformed
+
+    private void btnSortByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortByNameActionPerformed
+        InsertionSort insertionSort = new InsertionSort();
+        loadListToTable(insertionSort.sortByName(productList, false));
+    }//GEN-LAST:event_btnSortByNameActionPerformed
+
+    private void btnSortByBasePriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortByBasePriceActionPerformed
+        MergeSort mergeSort = new MergeSort();
+        loadListToTable(mergeSort.sortByBasePrice(productList, false));
+    }//GEN-LAST:event_btnSortByBasePriceActionPerformed
+
     /**
      * Creates a custom TitledBorder with specified color and title.
      *
@@ -937,43 +1048,37 @@ public class mainFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(mainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(bidmoreapp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(mainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(bidmoreapp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(mainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(bidmoreapp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(mainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(bidmoreapp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new mainFrame().setVisible(true);
+                new bidmoreapp().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAdd;
-    private javax.swing.JButton btnAdd1;
-    private javax.swing.JButton btnAdd2;
     private javax.swing.JButton btnAdd3;
     private javax.swing.JButton btnClear;
-    private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnDelete1;
-    private javax.swing.JButton btnDelete2;
     private javax.swing.JButton btnDelete4;
     private javax.swing.JButton btnLogin;
-    private javax.swing.JButton btnUpdate;
-    private javax.swing.JButton btnUpdate1;
-    private javax.swing.JButton btnUpdate2;
+    private javax.swing.JButton btnSortByBasePrice;
+    private javax.swing.JButton btnSortByName;
+    private javax.swing.JButton btnSortByProductId;
     private javax.swing.JButton btnUpdate3;
     private javax.swing.JComboBox<String> comboBoxStatus;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -982,21 +1087,6 @@ public class mainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblAdminHeader;
     private javax.swing.JLabel lblBidmoreLogo;
     private javax.swing.JLabel lblDescription;
-    private javax.swing.JLabel lblErrorMsgAge;
-    private javax.swing.JLabel lblErrorMsgAge1;
-    private javax.swing.JLabel lblErrorMsgAge2;
-    private javax.swing.JLabel lblErrorMsgContact;
-    private javax.swing.JLabel lblErrorMsgContact1;
-    private javax.swing.JLabel lblErrorMsgContact2;
-    private javax.swing.JLabel lblErrorMsgFullName;
-    private javax.swing.JLabel lblErrorMsgFullName1;
-    private javax.swing.JLabel lblErrorMsgFullName2;
-    private javax.swing.JLabel lblErrorMsgLmuId;
-    private javax.swing.JLabel lblErrorMsgLmuId1;
-    private javax.swing.JLabel lblErrorMsgLmuId2;
-    private javax.swing.JLabel lblErrorMsgProgram;
-    private javax.swing.JLabel lblErrorMsgProgram1;
-    private javax.swing.JLabel lblErrorMsgProgram2;
     private javax.swing.JLabel lblLoginHeader;
     private javax.swing.JLabel lblLogoIcon;
     private javax.swing.JLabel lblPassword;
@@ -1009,7 +1099,6 @@ public class mainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblWhyChooseUS;
     private javax.swing.JLabel lblloginerror;
     private javax.swing.JPanel pnlAboutUs;
-    private javax.swing.JPanel pnlAddNewProduct;
     private javax.swing.JPanel pnlAddProduct;
     private javax.swing.JPanel pnlAdmin;
     private javax.swing.JPanel pnlButton;
@@ -1022,28 +1111,14 @@ public class mainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane spTblProduct;
     private javax.swing.JTabbedPane tabpaneMain;
     private javax.swing.JTable tblProductList;
-    private javax.swing.JTextField txtFldAge;
-    private javax.swing.JTextField txtFldAge1;
-    private javax.swing.JTextField txtFldAge2;
     private javax.swing.JTextField txtFldAuctioneer;
     private javax.swing.JTextField txtFldBasePrice;
-    private javax.swing.JTextField txtFldContact;
-    private javax.swing.JTextField txtFldContact1;
-    private javax.swing.JTextField txtFldContact2;
     private javax.swing.JTextField txtFldDescription;
-    private javax.swing.JTextField txtFldFullName;
-    private javax.swing.JTextField txtFldFullName1;
-    private javax.swing.JTextField txtFldFullName2;
-    private javax.swing.JTextField txtFldLmuId;
-    private javax.swing.JTextField txtFldLmuId1;
-    private javax.swing.JTextField txtFldLmuId2;
     private javax.swing.JTextField txtFldLoginUserName;
     private javax.swing.JTextField txtFldProductID;
     private javax.swing.JTextField txtFldProductName;
     private javax.swing.JTextField txtFldProductType;
-    private javax.swing.JTextField txtFldProgram;
-    private javax.swing.JTextField txtFldProgram1;
-    private javax.swing.JTextField txtFldProgram2;
+    private java.awt.TextField txtFldSearchBar;
     private javax.swing.JTextPane txtPane1;
     private javax.swing.JTextPane txtPane2;
     private javax.swing.JTextPane txtPaneCommitment;

@@ -6,7 +6,7 @@ package com.bidmore.model;
 
 /**
  *
- * @author nirdeshsubedi
+ * @author 23056546 Nirdesh Subedi
  */
 public class ProductModel {
     private int productId;
