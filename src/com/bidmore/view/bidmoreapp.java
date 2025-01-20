@@ -11,15 +11,17 @@ import com.bidmore.controller.algorithms.BinarySearch;
 import java.util.LinkedList;
 import java.util.List;
 import com.bidmore.model.ProductModel;
-import java.awt.Color;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import com.bidmore.util.ValidationUtil;
+
 
 /**
  *
  * @author nirdeshsubedi
  */
-public class bidmoreapp extends javax.swing.JFrame {
+public class BidmoreApp extends javax.swing.JFrame {
     
     private List<ProductModel> productList;
     private java.awt.CardLayout cardLayout;
@@ -28,11 +30,16 @@ public class bidmoreapp extends javax.swing.JFrame {
     /**
      * Creates new form mainFrame
      */
-    public bidmoreapp() {
+    public BidmoreApp() {
         initComponents();
         initializeLayout(); 
         initializeData(); 
+        startProgress();
     }
+    
+    
+    
+    
     
     
     
@@ -48,25 +55,66 @@ public class bidmoreapp extends javax.swing.JFrame {
 
         // Add panels with unique identifiers
         
+        getContentPane().add(pnlLoadingScreen, "LoadingScreen");
         getContentPane().add(pnlLoginScreen, "LoginScreen");
         getContentPane().add(pnlMainScreen, "MainScreen");
 
         // Start with the loading screen
-        loadScreen("LoginScreen");
+        loadScreen("pnlLoadingScreen");
     }
+    
+     /**
+     * Simulates the loading progress using a SwingWorker thread. Updates a
+     * progress bar incrementally and switches to the login screen upon
+     * completion.
+     */
+    private void startProgress() {
+        javax.swing.SwingWorker<Void, Integer> worker = new javax.swing.SwingWorker<>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                for (int i = 0; i <= 100; i++) {
+                    Thread.sleep(30); // Simulated delay for progress bar
+                    publish(i); // Publish progress
+                }
+                return null;
+            }
+
+            @Override
+            protected void process(java.util.List<Integer> chunks) {
+                int progress = chunks.get(chunks.size() - 1);
+                prgsBarSplashScreen.setValue(progress);
+            }
+
+            @Override
+            protected void done() {
+                loadScreen("LoginScreen"); // Switching to login screen
+            }
+        };
+        worker.execute(); // Start the worker thread
+    }
+    
+    
+    
+    
+   
     
     
     /**
      * Initializes the application's data, including the student list and table.
-     * Populates the student list with sample data for demonstration purposes.
+     * Populates the product  list with sample data for demonstration purposes.
      */
     private void initializeData() {
         productList = new LinkedList<>();
 
         // Registering sample students
-        registerProduct(new ProductModel(103,"Old Dollar Coin","Coins",400," Iconic Dollar Bill ","Sam Smith","UPCOMING"));
-        registerProduct(new ProductModel(102,"Rolex Watch","Watch",500," Divers Watch ","Sam Smith","UPCOMING"));
+        registerProduct(new ProductModel(103,"Old Dollar Bill","Coins",400," Iconic Dollar Bill ","Richard Bay","UPCOMING"));
+        registerProduct(new ProductModel(102,"Rolex Watch","Watch",5000," Divers Watch ","Joseph Schimd","UPCOMING"));
         registerProduct(new ProductModel(101,"Pokemon NFT","NFT",100,"  NFT for pokemon lovers","Sam Smith","UPCOMING"));
+        registerProduct(new ProductModel(104,"JFK Autographed Cap","Cap",600," JFK Signature","RFK Jr.","ACTIVE"));
+        registerProduct(new ProductModel(105,"Not Last Supper","Paintings",17000," Peak Art "," Nirdesh Subedi","ACTIVE"));
+
+        
+
 }
 
     /**
@@ -79,6 +127,9 @@ public class bidmoreapp extends javax.swing.JFrame {
     private void initComponents() {
 
         pnlMainScreen = new javax.swing.JPanel();
+        pnlSideBar = new javax.swing.JPanel();
+        lblSideBarIcon = new javax.swing.JLabel();
+        btnLogOut = new javax.swing.JButton();
         tabpaneMain = new javax.swing.JTabbedPane();
         pnlHomeScreen = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -90,38 +141,65 @@ public class bidmoreapp extends javax.swing.JFrame {
         lblWelcomeMessage = new javax.swing.JLabel();
         lblDescription = new javax.swing.JLabel();
         lblWhyChooseUS = new javax.swing.JLabel();
-        pnlProductView = new javax.swing.JPanel();
+        pnlListings = new javax.swing.JPanel();
         spTblProduct = new javax.swing.JScrollPane();
         tblProductList = new javax.swing.JTable();
         lblTableHeader = new javax.swing.JLabel();
-        btnSortByProductId = new javax.swing.JButton();
         txtFldSearchBar = new java.awt.TextField();
-        jButton1 = new javax.swing.JButton();
-        btnSortByName = new javax.swing.JButton();
-        btnSortByBasePrice = new javax.swing.JButton();
-        pnlAdmin = new javax.swing.JPanel();
+        btnBinarySearch = new javax.swing.JButton();
+        comboBoxSort = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        btnShowAll = new javax.swing.JButton();
+        pnlProductEntry = new javax.swing.JPanel();
         pnlAddProduct = new javax.swing.JPanel();
         txtFldProductID = new javax.swing.JTextField();
         txtFldProductName = new javax.swing.JTextField();
         txtFldBasePrice = new javax.swing.JTextField();
         txtFldAuctioneer = new javax.swing.JTextField();
         txtFldProductType = new javax.swing.JTextField();
-        btnUpdate3 = new javax.swing.JButton();
         btnAdd3 = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
         txtFldDescription = new javax.swing.JTextField();
         comboBoxStatus = new javax.swing.JComboBox<>();
-        jLabel1 = new javax.swing.JLabel();
-        btnDelete4 = new javax.swing.JButton();
+        lblProductID = new javax.swing.JLabel();
+        lblProductName = new javax.swing.JLabel();
+        lblType = new javax.swing.JLabel();
+        lblAuctioneer = new javax.swing.JLabel();
+        lblBasePrice = new javax.swing.JLabel();
+        lblStatus = new javax.swing.JLabel();
+        lblDescrption1 = new javax.swing.JLabel();
         lblAdminHeader = new javax.swing.JLabel();
+        pnlUpdates = new javax.swing.JPanel();
+        pnlEntryUpdate = new javax.swing.JPanel();
+        lblProductEntry = new javax.swing.JLabel();
+        txtFldEnterProductId = new javax.swing.JTextField();
+        btnFind = new javax.swing.JButton();
+        pnlFoundProduct = new javax.swing.JPanel();
+        txtFldFindProductId = new javax.swing.JTextField();
+        txtFldFindName = new javax.swing.JTextField();
+        lblFindProductId = new javax.swing.JLabel();
+        lblFindName = new javax.swing.JLabel();
+        txtFldFindType = new javax.swing.JTextField();
+        lblFindStatus = new javax.swing.JLabel();
+        txtFldFindBasePrice = new javax.swing.JTextField();
+        lblFindBasePrice = new javax.swing.JLabel();
+        txtFldFindAuctioneer = new javax.swing.JTextField();
+        lblFindBasePrice1 = new javax.swing.JLabel();
+        txtFldFindDescription = new javax.swing.JTextField();
+        lblFindDescription = new javax.swing.JLabel();
+        lblFindType1 = new javax.swing.JLabel();
+        comboBoxFindStatus = new javax.swing.JComboBox<>();
+        btnDelete = new javax.swing.JButton();
+        btnFindClear = new javax.swing.JButton();
+        btnEnableUpdate = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
+        label1 = new java.awt.Label();
         pnlAboutUs = new javax.swing.JPanel();
         lblLogoIcon = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         txtPaneCommitment = new javax.swing.JTextPane();
         jScrollPane5 = new javax.swing.JScrollPane();
         txtPaneCommitment2 = new javax.swing.JTextPane();
-        pnlSideBar = new javax.swing.JPanel();
-        lblSideBarIcon = new javax.swing.JLabel();
         pnlLoginScreen = new javax.swing.JPanel();
         txtFldLoginUserName = new javax.swing.JTextField();
         pswrdFldLoginPassword = new javax.swing.JPasswordField();
@@ -134,8 +212,46 @@ public class bidmoreapp extends javax.swing.JFrame {
         pnlButton = new javax.swing.JPanel();
         btnLogin = new javax.swing.JButton();
         lblLoginHeader = new javax.swing.JLabel();
+        pnlLoadingScreen = new javax.swing.JPanel();
+        lblBidmoreLogoLoading = new javax.swing.JLabel();
+        prgsBarSplashScreen = new javax.swing.JProgressBar();
+        lblLoading = new javax.swing.JLabel();
 
         pnlMainScreen.setPreferredSize(new java.awt.Dimension(1203, 701));
+
+        pnlSideBar.setBackground(new java.awt.Color(255, 255, 255));
+        pnlSideBar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 102, 255), 3, true));
+
+        lblSideBarIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/bidmore/resources/sidebaricom.jpg"))); // NOI18N
+
+        btnLogOut.setBackground(new java.awt.Color(51, 102, 255));
+        btnLogOut.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 14)); // NOI18N
+        btnLogOut.setForeground(new java.awt.Color(255, 255, 255));
+        btnLogOut.setText("Log Out");
+        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogOutActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlSideBarLayout = new javax.swing.GroupLayout(pnlSideBar);
+        pnlSideBar.setLayout(pnlSideBarLayout);
+        pnlSideBarLayout.setHorizontalGroup(
+            pnlSideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSideBarLayout.createSequentialGroup()
+                .addComponent(lblSideBarIcon)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnLogOut)
+                .addGap(21, 21, 21))
+        );
+        pnlSideBarLayout.setVerticalGroup(
+            pnlSideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblSideBarIcon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+            .addGroup(pnlSideBarLayout.createSequentialGroup()
+                .addGap(48, 48, 48)
+                .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         tabpaneMain.setBackground(new java.awt.Color(51, 102, 255));
         tabpaneMain.setForeground(new java.awt.Color(255, 255, 255));
@@ -228,7 +344,7 @@ public class bidmoreapp extends javax.swing.JFrame {
 
         tabpaneMain.addTab("        HOME     ", pnlHomeScreen);
 
-        pnlProductView.setBackground(new java.awt.Color(255, 255, 255));
+        pnlListings.setBackground(new java.awt.Color(255, 255, 255));
 
         tblProductList.setAutoCreateRowSorter(true);
         tblProductList.setBackground(new java.awt.Color(153, 204, 255));
@@ -259,20 +375,9 @@ public class bidmoreapp extends javax.swing.JFrame {
         spTblProduct.setViewportView(tblProductList);
 
         lblTableHeader.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 18)); // NOI18N
-        lblTableHeader.setForeground(new java.awt.Color(0, 0, 0));
+        lblTableHeader.setForeground(new java.awt.Color(51, 102, 255));
         lblTableHeader.setText("   Product Information");
-        lblTableHeader.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
-
-        btnSortByProductId.setBackground(new java.awt.Color(255, 255, 255));
-        btnSortByProductId.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
-        btnSortByProductId.setForeground(new java.awt.Color(51, 102, 255));
-        btnSortByProductId.setText("Sort by Product Id ");
-        btnSortByProductId.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 102, 255), 2, true));
-        btnSortByProductId.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSortByProductIdActionPerformed(evt);
-            }
-        });
+        lblTableHeader.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 102, 255), 1, true));
 
         txtFldSearchBar.setBackground(new java.awt.Color(255, 255, 255));
         txtFldSearchBar.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 12)); // NOI18N
@@ -283,93 +388,102 @@ public class bidmoreapp extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(51, 51, 255));
-        jButton1.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 14)); // NOI18N
-        jButton1.setText("Search ");
-        jButton1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 2, true));
-
-        btnSortByName.setBackground(new java.awt.Color(255, 255, 255));
-        btnSortByName.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
-        btnSortByName.setForeground(new java.awt.Color(51, 102, 255));
-        btnSortByName.setText("Sort by Name ");
-        btnSortByName.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 102, 255), 2, true));
-        btnSortByName.addActionListener(new java.awt.event.ActionListener() {
+        btnBinarySearch.setBackground(new java.awt.Color(51, 51, 255));
+        btnBinarySearch.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 14)); // NOI18N
+        btnBinarySearch.setText("Search ");
+        btnBinarySearch.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 2, true));
+        btnBinarySearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSortByNameActionPerformed(evt);
+                btnBinarySearchActionPerformed(evt);
             }
         });
 
-        btnSortByBasePrice.setBackground(new java.awt.Color(255, 255, 255));
-        btnSortByBasePrice.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
-        btnSortByBasePrice.setForeground(new java.awt.Color(51, 102, 255));
-        btnSortByBasePrice.setText("Sort by Base Price ");
-        btnSortByBasePrice.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 102, 255), 2, true));
-        btnSortByBasePrice.addActionListener(new java.awt.event.ActionListener() {
+        comboBoxSort.setBackground(new java.awt.Color(51, 102, 255));
+        comboBoxSort.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 13)); // NOI18N
+        comboBoxSort.setForeground(new java.awt.Color(255, 255, 255));
+        comboBoxSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Product ID", "Product Name", "Base Prce" }));
+        comboBoxSort.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        comboBoxSort.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSortByBasePriceActionPerformed(evt);
+                comboBoxSortActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout pnlProductViewLayout = new javax.swing.GroupLayout(pnlProductView);
-        pnlProductView.setLayout(pnlProductViewLayout);
-        pnlProductViewLayout.setHorizontalGroup(
-            pnlProductViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlProductViewLayout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(spTblProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 975, javax.swing.GroupLayout.PREFERRED_SIZE)
+        jLabel2.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(51, 102, 255));
+        jLabel2.setText("Sort By : ");
+
+        btnShowAll.setBackground(new java.awt.Color(51, 51, 255));
+        btnShowAll.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 18)); // NOI18N
+        btnShowAll.setForeground(new java.awt.Color(255, 255, 255));
+        btnShowAll.setText("Show All");
+        btnShowAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShowAllActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlListingsLayout = new javax.swing.GroupLayout(pnlListings);
+        pnlListings.setLayout(pnlListingsLayout);
+        pnlListingsLayout.setHorizontalGroup(
+            pnlListingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlListingsLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(pnlListingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(spTblProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 975, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlListingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlListingsLayout.createSequentialGroup()
+                            .addGap(6, 6, 6)
+                            .addComponent(btnShowAll, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(pnlListingsLayout.createSequentialGroup()
+                            .addComponent(lblTableHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(578, 578, 578)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(comboBoxSort, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(0, 21, Short.MAX_VALUE))
+            .addGroup(pnlListingsLayout.createSequentialGroup()
+                .addGap(280, 280, 280)
+                .addComponent(txtFldSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(btnBinarySearch, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlProductViewLayout.createSequentialGroup()
-                .addGroup(pnlProductViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlProductViewLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(txtFldSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(113, 113, 113)
-                        .addComponent(btnSortByProductId, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlProductViewLayout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(lblTableHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSortByName, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlProductViewLayout.createSequentialGroup()
-                        .addGap(847, 847, 847)
-                        .addComponent(btnSortByBasePrice, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(64, 64, 64))
         );
-        pnlProductViewLayout.setVerticalGroup(
-            pnlProductViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlProductViewLayout.createSequentialGroup()
-                .addGroup(pnlProductViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlProductViewLayout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addGroup(pnlProductViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtFldSearchBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE))
-                        .addGap(30, 30, 30))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlProductViewLayout.createSequentialGroup()
+        pnlListingsLayout.setVerticalGroup(
+            pnlListingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlListingsLayout.createSequentialGroup()
+                .addGroup(pnlListingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlListingsLayout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(pnlListingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtFldSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBinarySearch, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(98, 98, 98))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlListingsLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(btnSortByProductId, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSortByBasePrice, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addGroup(pnlProductViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTableHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSortByName, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(pnlListingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTableHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboBoxSort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(spTblProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(111, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnShowAll)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
-        tabpaneMain.addTab("View", pnlProductView);
+        tabpaneMain.addTab("Listings", pnlListings);
 
-        pnlAdmin.setBackground(new java.awt.Color(255, 255, 255));
+        pnlProductEntry.setBackground(new java.awt.Color(255, 255, 255));
 
         pnlAddProduct.setBackground(new java.awt.Color(51, 102, 255));
 
         txtFldProductID.setBackground(new java.awt.Color(255, 255, 255));
+        txtFldProductID.setFont(new java.awt.Font(".AppleSystemUIFont", 0, 14)); // NOI18N
         txtFldProductID.setForeground(new java.awt.Color(51, 51, 255));
-        txtFldProductID.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 255), 2), "Product ID", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(51, 102, 255))); // NOI18N
+        txtFldProductID.setToolTipText("");
+        txtFldProductID.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(51, 102, 255)));
+        txtFldProductID.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txtFldProductID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtFldProductIDActionPerformed(evt);
@@ -377,30 +491,39 @@ public class bidmoreapp extends javax.swing.JFrame {
         });
 
         txtFldProductName.setBackground(new java.awt.Color(255, 255, 255));
-        txtFldProductName.setForeground(new java.awt.Color(51, 51, 255));
-        txtFldProductName.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255), 2), "Name", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(51, 102, 255))); // NOI18N
+        txtFldProductName.setFont(new java.awt.Font(".AppleSystemUIFont", 0, 14)); // NOI18N
+        txtFldProductName.setForeground(new java.awt.Color(51, 102, 255));
+        txtFldProductName.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(51, 102, 255)));
 
         txtFldBasePrice.setBackground(new java.awt.Color(255, 255, 255));
-        txtFldBasePrice.setForeground(new java.awt.Color(51, 153, 255));
-        txtFldBasePrice.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255), 2), "Base Price", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(51, 102, 255))); // NOI18N
+        txtFldBasePrice.setFont(new java.awt.Font(".AppleSystemUIFont", 0, 14)); // NOI18N
+        txtFldBasePrice.setForeground(new java.awt.Color(51, 102, 255));
+        txtFldBasePrice.setBorder(null);
+        txtFldBasePrice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFldBasePriceActionPerformed(evt);
+            }
+        });
 
         txtFldAuctioneer.setBackground(new java.awt.Color(255, 255, 255));
+        txtFldAuctioneer.setFont(new java.awt.Font(".AppleSystemUIFont", 0, 14)); // NOI18N
         txtFldAuctioneer.setForeground(new java.awt.Color(51, 102, 255));
-        txtFldAuctioneer.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255), 2), "Auctioneer", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(51, 102, 255))); // NOI18N
+        txtFldAuctioneer.setBorder(null);
+        txtFldAuctioneer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFldAuctioneerActionPerformed(evt);
+            }
+        });
 
         txtFldProductType.setBackground(new java.awt.Color(255, 255, 255));
+        txtFldProductType.setFont(new java.awt.Font(".AppleSystemUIFont", 0, 14)); // NOI18N
         txtFldProductType.setForeground(new java.awt.Color(51, 102, 255));
-        txtFldProductType.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255), 2), "Type", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(51, 102, 255))); // NOI18N
-
-        btnUpdate3.setBackground(new java.awt.Color(255, 255, 255));
-        btnUpdate3.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 18)); // NOI18N
-        btnUpdate3.setForeground(new java.awt.Color(51, 102, 255));
-        btnUpdate3.setText("Update");
+        txtFldProductType.setBorder(null);
 
         btnAdd3.setBackground(new java.awt.Color(255, 255, 255));
         btnAdd3.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 18)); // NOI18N
         btnAdd3.setForeground(new java.awt.Color(51, 102, 255));
-        btnAdd3.setText("Add");
+        btnAdd3.setText("List");
         btnAdd3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAdd3ActionPerformed(evt);
@@ -418,8 +541,9 @@ public class bidmoreapp extends javax.swing.JFrame {
         });
 
         txtFldDescription.setBackground(new java.awt.Color(255, 255, 255));
+        txtFldDescription.setFont(new java.awt.Font(".AppleSystemUIFont", 0, 14)); // NOI18N
         txtFldDescription.setForeground(new java.awt.Color(51, 102, 255));
-        txtFldDescription.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255), 2), "Description", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(51, 102, 255))); // NOI18N
+        txtFldDescription.setBorder(null);
 
         comboBoxStatus.setBackground(new java.awt.Color(255, 255, 255));
         comboBoxStatus.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
@@ -432,123 +556,436 @@ public class bidmoreapp extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
-        jLabel1.setText("Status");
+        lblProductID.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 14)); // NOI18N
+        lblProductID.setForeground(new java.awt.Color(255, 255, 255));
+        lblProductID.setText("Product ID");
 
-        btnDelete4.setBackground(new java.awt.Color(255, 255, 255));
-        btnDelete4.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 18)); // NOI18N
-        btnDelete4.setForeground(new java.awt.Color(51, 102, 255));
-        btnDelete4.setText("Delete");
-        btnDelete4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDelete4ActionPerformed(evt);
-            }
-        });
+        lblProductName.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 14)); // NOI18N
+        lblProductName.setForeground(new java.awt.Color(255, 255, 255));
+        lblProductName.setText("Product Name");
+
+        lblType.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 14)); // NOI18N
+        lblType.setForeground(new java.awt.Color(255, 255, 255));
+        lblType.setText("Type");
+
+        lblAuctioneer.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 14)); // NOI18N
+        lblAuctioneer.setForeground(new java.awt.Color(255, 255, 255));
+        lblAuctioneer.setText("Auctioneer");
+
+        lblBasePrice.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 14)); // NOI18N
+        lblBasePrice.setForeground(new java.awt.Color(255, 255, 255));
+        lblBasePrice.setText("Base Price");
+
+        lblStatus.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 14)); // NOI18N
+        lblStatus.setForeground(new java.awt.Color(255, 255, 255));
+        lblStatus.setText("Status");
+
+        lblDescrption1.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 14)); // NOI18N
+        lblDescrption1.setForeground(new java.awt.Color(255, 255, 255));
+        lblDescrption1.setText("Description");
 
         javax.swing.GroupLayout pnlAddProductLayout = new javax.swing.GroupLayout(pnlAddProduct);
         pnlAddProduct.setLayout(pnlAddProductLayout);
         pnlAddProductLayout.setHorizontalGroup(
             pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAddProductLayout.createSequentialGroup()
-                .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(pnlAddProductLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlAddProductLayout.createSequentialGroup()
-                        .addGap(22, 22, 22)
                         .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlAddProductLayout.createSequentialGroup()
+                                .addGap(314, 314, 314)
                                 .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(txtFldProductID, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAddProductLayout.createSequentialGroup()
-                                .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtFldAuctioneer, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(comboBoxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
-                                .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAddProductLayout.createSequentialGroup()
-                                            .addComponent(txtFldProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(txtFldProductType, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(txtFldDescription, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 637, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(btnDelete4, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(pnlAddProductLayout.createSequentialGroup()
-                                            .addComponent(txtFldBasePrice, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(183, 183, 183)
-                                            .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(12, 12, 12)))))))
+                                    .addComponent(lblBasePrice)
+                                    .addComponent(txtFldBasePrice, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtFldAuctioneer, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblDescrption1)
+                            .addComponent(txtFldDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 505, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(67, 67, 67)
+                        .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(lblStatus)
+                                .addComponent(comboBoxStatus, 0, 213, Short.MAX_VALUE)
+                                .addComponent(btnAdd3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(pnlAddProductLayout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addComponent(btnAdd3, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(117, 117, 117)
-                        .addComponent(btnUpdate3, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(46, 46, 46))
+                        .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblProductID)
+                            .addComponent(txtFldProductID, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblAuctioneer))
+                        .addGap(35, 35, 35)
+                        .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtFldProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblProductName))
+                        .addGap(61, 61, 61)
+                        .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblType)
+                            .addComponent(txtFldProductType, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         pnlAddProductLayout.setVerticalGroup(
             pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlAddProductLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtFldProductID, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtFldProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtFldProductType, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                .addGap(23, 23, 23)
                 .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFldAuctioneer, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFldDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblProductID)
+                    .addComponent(lblProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblType, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlAddProductLayout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(jLabel1)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(pnlAddProductLayout.createSequentialGroup()
-                        .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlAddProductLayout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtFldBasePrice, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(comboBoxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(pnlAddProductLayout.createSequentialGroup()
-                                .addGap(31, 31, 31)
-                                .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
-                        .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnAdd3, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnUpdate3, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnDelete4, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(42, 42, 42))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAddProductLayout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(txtFldProductID, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtFldProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtFldProductType, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(29, 29, 29)
+                .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblAuctioneer)
+                    .addComponent(lblBasePrice)
+                    .addComponent(lblStatus))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtFldAuctioneer, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFldBasePrice, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboBoxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(lblDescrption1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtFldDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAdd3, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         lblAdminHeader.setBackground(new java.awt.Color(255, 255, 255));
         lblAdminHeader.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 14)); // NOI18N
         lblAdminHeader.setForeground(new java.awt.Color(51, 102, 255));
-        lblAdminHeader.setText("Fill the form below to add product for auction.");
+        lblAdminHeader.setText("Fill the form below to list  product for auction.");
 
-        javax.swing.GroupLayout pnlAdminLayout = new javax.swing.GroupLayout(pnlAdmin);
-        pnlAdmin.setLayout(pnlAdminLayout);
-        pnlAdminLayout.setHorizontalGroup(
-            pnlAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlAdminLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnlProductEntryLayout = new javax.swing.GroupLayout(pnlProductEntry);
+        pnlProductEntry.setLayout(pnlProductEntryLayout);
+        pnlProductEntryLayout.setHorizontalGroup(
+            pnlProductEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlProductEntryLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addGroup(pnlAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlProductEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblAdminHeader)
                     .addComponent(pnlAddProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
-        pnlAdminLayout.setVerticalGroup(
-            pnlAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAdminLayout.createSequentialGroup()
-                .addContainerGap(33, Short.MAX_VALUE)
+        pnlProductEntryLayout.setVerticalGroup(
+            pnlProductEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlProductEntryLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblAdminHeader)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnlAddProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
+                .addGap(821, 821, 821))
         );
 
-        tabpaneMain.addTab("Admin", pnlAdmin);
+        tabpaneMain.addTab("Product Entry", pnlProductEntry);
+
+        pnlEntryUpdate.setBackground(new java.awt.Color(255, 255, 255));
+
+        lblProductEntry.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 14)); // NOI18N
+        lblProductEntry.setForeground(new java.awt.Color(51, 102, 255));
+        lblProductEntry.setText("Enter Product ID of the product you want to update or delete");
+
+        txtFldEnterProductId.setBackground(new java.awt.Color(255, 255, 255));
+        txtFldEnterProductId.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 12)); // NOI18N
+        txtFldEnterProductId.setForeground(new java.awt.Color(51, 102, 255));
+        txtFldEnterProductId.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255), 3));
+
+        btnFind.setBackground(new java.awt.Color(51, 102, 255));
+        btnFind.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 14)); // NOI18N
+        btnFind.setText("Find");
+        btnFind.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFindActionPerformed(evt);
+            }
+        });
+
+        pnlFoundProduct.setBackground(new java.awt.Color(51, 102, 255));
+
+        txtFldFindProductId.setEditable(false);
+        txtFldFindProductId.setBackground(new java.awt.Color(255, 255, 255));
+        txtFldFindProductId.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 13)); // NOI18N
+        txtFldFindProductId.setForeground(new java.awt.Color(51, 102, 255));
+        txtFldFindProductId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFldFindProductIdActionPerformed(evt);
+            }
+        });
+
+        txtFldFindName.setEditable(false);
+        txtFldFindName.setBackground(new java.awt.Color(255, 255, 255));
+        txtFldFindName.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 13)); // NOI18N
+        txtFldFindName.setForeground(new java.awt.Color(51, 102, 255));
+        txtFldFindName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFldFindNameActionPerformed(evt);
+            }
+        });
+
+        lblFindProductId.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 13)); // NOI18N
+        lblFindProductId.setText("Product ID");
+
+        lblFindName.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 13)); // NOI18N
+        lblFindName.setText("Name");
+
+        txtFldFindType.setEditable(false);
+        txtFldFindType.setBackground(new java.awt.Color(255, 255, 255));
+        txtFldFindType.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 13)); // NOI18N
+        txtFldFindType.setForeground(new java.awt.Color(51, 102, 255));
+        txtFldFindType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFldFindTypeActionPerformed(evt);
+            }
+        });
+
+        lblFindStatus.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 13)); // NOI18N
+        lblFindStatus.setText("Status");
+
+        txtFldFindBasePrice.setEditable(false);
+        txtFldFindBasePrice.setBackground(new java.awt.Color(255, 255, 255));
+        txtFldFindBasePrice.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 13)); // NOI18N
+        txtFldFindBasePrice.setForeground(new java.awt.Color(51, 102, 255));
+        txtFldFindBasePrice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFldFindBasePriceActionPerformed(evt);
+            }
+        });
+
+        lblFindBasePrice.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 13)); // NOI18N
+        lblFindBasePrice.setText("Base Price");
+
+        txtFldFindAuctioneer.setEditable(false);
+        txtFldFindAuctioneer.setBackground(new java.awt.Color(255, 255, 255));
+        txtFldFindAuctioneer.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 13)); // NOI18N
+        txtFldFindAuctioneer.setForeground(new java.awt.Color(51, 102, 255));
+        txtFldFindAuctioneer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFldFindAuctioneerActionPerformed(evt);
+            }
+        });
+
+        lblFindBasePrice1.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 13)); // NOI18N
+        lblFindBasePrice1.setText("Auctioneer");
+
+        txtFldFindDescription.setEditable(false);
+        txtFldFindDescription.setBackground(new java.awt.Color(255, 255, 255));
+        txtFldFindDescription.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 13)); // NOI18N
+        txtFldFindDescription.setForeground(new java.awt.Color(51, 102, 255));
+        txtFldFindDescription.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFldFindDescriptionActionPerformed(evt);
+            }
+        });
+
+        lblFindDescription.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 13)); // NOI18N
+        lblFindDescription.setText("Description");
+
+        lblFindType1.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 13)); // NOI18N
+        lblFindType1.setText("Type");
+
+        comboBoxFindStatus.setBackground(new java.awt.Color(255, 255, 255));
+        comboBoxFindStatus.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        comboBoxFindStatus.setForeground(new java.awt.Color(51, 102, 255));
+        comboBoxFindStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "UPCOMING", "ACTIVE", "SOLD", "CLOSED", " ", " " }));
+        comboBoxFindStatus.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        comboBoxFindStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxFindStatusActionPerformed(evt);
+            }
+        });
+
+        btnDelete.setBackground(new java.awt.Color(255, 255, 255));
+        btnDelete.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 14)); // NOI18N
+        btnDelete.setForeground(new java.awt.Color(51, 102, 255));
+        btnDelete.setText("Delete Product");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
+        btnFindClear.setBackground(new java.awt.Color(255, 255, 255));
+        btnFindClear.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 14)); // NOI18N
+        btnFindClear.setForeground(new java.awt.Color(51, 102, 255));
+        btnFindClear.setText("Clear All");
+        btnFindClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFindClearActionPerformed(evt);
+            }
+        });
+
+        btnEnableUpdate.setBackground(new java.awt.Color(255, 255, 255));
+        btnEnableUpdate.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 14)); // NOI18N
+        btnEnableUpdate.setForeground(new java.awt.Color(51, 102, 255));
+        btnEnableUpdate.setText("Enable to Update");
+        btnEnableUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnableUpdateActionPerformed(evt);
+            }
+        });
+
+        btnUpdate.setBackground(new java.awt.Color(255, 255, 255));
+        btnUpdate.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 14)); // NOI18N
+        btnUpdate.setForeground(new java.awt.Color(51, 102, 255));
+        btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
+
+        label1.setFont(new java.awt.Font("Baloo Bhaina 2", 0, 14)); // NOI18N
+        label1.setText("Note:\nProduct Id of the product cannot be updated.");
+
+        javax.swing.GroupLayout pnlFoundProductLayout = new javax.swing.GroupLayout(pnlFoundProduct);
+        pnlFoundProduct.setLayout(pnlFoundProductLayout);
+        pnlFoundProductLayout.setHorizontalGroup(
+            pnlFoundProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlFoundProductLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlFoundProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlFoundProductLayout.createSequentialGroup()
+                        .addGroup(pnlFoundProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFoundProductLayout.createSequentialGroup()
+                                .addGroup(pnlFoundProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtFldFindDescription, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(pnlFoundProductLayout.createSequentialGroup()
+                                        .addGroup(pnlFoundProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtFldFindProductId, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(lblFindProductId))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(pnlFoundProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblFindName)
+                                            .addComponent(txtFldFindName, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(pnlFoundProductLayout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(btnFindClear, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(42, 42, 42)
+                                        .addComponent(btnEnableUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(pnlFoundProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(pnlFoundProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(pnlFoundProductLayout.createSequentialGroup()
+                                            .addGap(29, 29, 29)
+                                            .addGroup(pnlFoundProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(lblFindType1)
+                                                .addComponent(txtFldFindType, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(pnlFoundProductLayout.createSequentialGroup()
+                                            .addGap(38, 38, 38)
+                                            .addComponent(lblFindBasePrice))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFoundProductLayout.createSequentialGroup()
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(txtFldFindBasePrice, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(pnlFoundProductLayout.createSequentialGroup()
+                                        .addGap(50, 50, 50)
+                                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(38, 38, 38))
+                            .addGroup(pnlFoundProductLayout.createSequentialGroup()
+                                .addComponent(lblFindDescription)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(pnlFoundProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtFldFindAuctioneer, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblFindStatus)
+                            .addComponent(lblFindBasePrice1)
+                            .addGroup(pnlFoundProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(comboBoxFindStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 34, Short.MAX_VALUE))
+                    .addGroup(pnlFoundProductLayout.createSequentialGroup()
+                        .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
+        );
+        pnlFoundProductLayout.setVerticalGroup(
+            pnlFoundProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlFoundProductLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlFoundProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblFindBasePrice1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, Short.MAX_VALUE)
+                    .addGroup(pnlFoundProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblFindProductId, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblFindName, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblFindType1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlFoundProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtFldFindType, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                    .addComponent(txtFldFindAuctioneer)
+                    .addComponent(txtFldFindName)
+                    .addComponent(txtFldFindProductId))
+                .addGroup(pnlFoundProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlFoundProductLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(lblFindDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlFoundProductLayout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addGroup(pnlFoundProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblFindBasePrice, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblFindStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlFoundProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtFldFindDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFldFindBasePrice, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboBoxFindStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(49, 49, 49)
+                .addGroup(pnlFoundProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnFindClear, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEnableUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(53, 53, 53))
+        );
+
+        javax.swing.GroupLayout pnlEntryUpdateLayout = new javax.swing.GroupLayout(pnlEntryUpdate);
+        pnlEntryUpdate.setLayout(pnlEntryUpdateLayout);
+        pnlEntryUpdateLayout.setHorizontalGroup(
+            pnlEntryUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlEntryUpdateLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(pnlEntryUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlEntryUpdateLayout.createSequentialGroup()
+                        .addComponent(txtFldEnterProductId, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(btnFind, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblProductEntry, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnlFoundProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(7, Short.MAX_VALUE))
+        );
+        pnlEntryUpdateLayout.setVerticalGroup(
+            pnlEntryUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlEntryUpdateLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(lblProductEntry)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlEntryUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtFldEnterProductId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFind))
+                .addGap(18, 18, 18)
+                .addComponent(pnlFoundProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(36, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout pnlUpdatesLayout = new javax.swing.GroupLayout(pnlUpdates);
+        pnlUpdates.setLayout(pnlUpdatesLayout);
+        pnlUpdatesLayout.setHorizontalGroup(
+            pnlUpdatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlEntryUpdate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        pnlUpdatesLayout.setVerticalGroup(
+            pnlUpdatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlUpdatesLayout.createSequentialGroup()
+                .addComponent(pnlEntryUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        tabpaneMain.addTab("Entry Update", pnlUpdates);
 
         pnlAboutUs.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -572,16 +1009,18 @@ public class bidmoreapp extends javax.swing.JFrame {
         pnlAboutUs.setLayout(pnlAboutUsLayout);
         pnlAboutUsLayout.setHorizontalGroup(
             pnlAboutUsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAboutUsLayout.createSequentialGroup()
-                .addGap(71, 71, 71)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(72, 72, 72))
             .addGroup(pnlAboutUsLayout.createSequentialGroup()
-                .addGap(374, 374, 374)
-                .addComponent(lblLogoIcon)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(71, 71, 71)
+                .addGroup(pnlAboutUsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlAboutUsLayout.createSequentialGroup()
+                        .addGap(304, 304, 304)
+                        .addComponent(lblLogoIcon)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnlAboutUsLayout.createSequentialGroup()
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(72, 72, 72))))
         );
         pnlAboutUsLayout.setVerticalGroup(
             pnlAboutUsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -597,30 +1036,15 @@ public class bidmoreapp extends javax.swing.JFrame {
 
         tabpaneMain.addTab("About Us", pnlAboutUs);
 
-        pnlSideBar.setBackground(new java.awt.Color(255, 255, 255));
-
-        lblSideBarIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/bidmore/resources/sidebaricom.jpg"))); // NOI18N
-        lblSideBarIcon.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 153, 255), 3, true));
-
-        javax.swing.GroupLayout pnlSideBarLayout = new javax.swing.GroupLayout(pnlSideBar);
-        pnlSideBar.setLayout(pnlSideBarLayout);
-        pnlSideBarLayout.setHorizontalGroup(
-            pnlSideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlSideBarLayout.createSequentialGroup()
-                .addComponent(lblSideBarIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 1210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        pnlSideBarLayout.setVerticalGroup(
-            pnlSideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblSideBarIcon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout pnlMainScreenLayout = new javax.swing.GroupLayout(pnlMainScreen);
         pnlMainScreen.setLayout(pnlMainScreenLayout);
         pnlMainScreenLayout.setHorizontalGroup(
             pnlMainScreenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlSideBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(tabpaneMain, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(pnlMainScreenLayout.createSequentialGroup()
+                .addGroup(pnlMainScreenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tabpaneMain, javax.swing.GroupLayout.DEFAULT_SIZE, 1197, Short.MAX_VALUE)
+                    .addComponent(pnlSideBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         pnlMainScreenLayout.setVerticalGroup(
             pnlMainScreenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -675,8 +1099,9 @@ public class bidmoreapp extends javax.swing.JFrame {
         pnlButton.setForeground(new java.awt.Color(51, 51, 255));
 
         btnLogin.setBackground(new java.awt.Color(255, 255, 255));
-        btnLogin.setFont(new java.awt.Font(".AppleSystemUIFont", 1, 18)); // NOI18N
+        btnLogin.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 18)); // NOI18N
         btnLogin.setForeground(new java.awt.Color(51, 102, 255));
+        btnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
         btnLogin.setLabel("Login");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -688,23 +1113,23 @@ public class bidmoreapp extends javax.swing.JFrame {
         pnlButton.setLayout(pnlButtonLayout);
         pnlButtonLayout.setHorizontalGroup(
             pnlButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlButtonLayout.createSequentialGroup()
-                .addGap(496, 496, 496)
-                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlButtonLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(470, 470, 470))
         );
         pnlButtonLayout.setVerticalGroup(
             pnlButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlButtonLayout.createSequentialGroup()
                 .addGap(63, 63, 63)
-                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(88, Short.MAX_VALUE))
+                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         lblLoginHeader.setBackground(new java.awt.Color(255, 255, 255));
         lblLoginHeader.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 36)); // NOI18N
         lblLoginHeader.setForeground(new java.awt.Color(51, 102, 255));
-        lblLoginHeader.setText("--> Login Here <--");
+        lblLoginHeader.setText("Log In");
 
         javax.swing.GroupLayout pnlLoginScreenLayout = new javax.swing.GroupLayout(pnlLoginScreen);
         pnlLoginScreen.setLayout(pnlLoginScreenLayout);
@@ -725,7 +1150,9 @@ public class bidmoreapp extends javax.swing.JFrame {
                             .addComponent(txtFldLoginUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblPassword)
                             .addComponent(lblloginerror, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblLoginHeader))
+                            .addGroup(pnlLoginScreenLayout.createSequentialGroup()
+                                .addGap(92, 92, 92)
+                                .addComponent(lblLoginHeader)))
                         .addGap(435, 435, 435))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLoginScreenLayout.createSequentialGroup()
                         .addComponent(lblBidmoreLogo)
@@ -736,9 +1163,9 @@ public class bidmoreapp extends javax.swing.JFrame {
             .addGroup(pnlLoginScreenLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(lblBidmoreLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addComponent(lblLoginHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblloginerror, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(pnlLoginScreenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -761,17 +1188,72 @@ public class bidmoreapp extends javax.swing.JFrame {
                         .addContainerGap())))
         );
 
+        pnlLoadingScreen.setBackground(new java.awt.Color(255, 255, 255));
+        pnlLoadingScreen.setPreferredSize(new java.awt.Dimension(1203, 701));
+
+        lblBidmoreLogoLoading.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/bidmore/resources/loginscreenicon.png"))); // NOI18N
+
+        prgsBarSplashScreen.setBackground(new java.awt.Color(255, 255, 255));
+        prgsBarSplashScreen.setForeground(new java.awt.Color(255, 255, 255));
+        prgsBarSplashScreen.setToolTipText("");
+        prgsBarSplashScreen.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 102, 255), 3, true));
+        prgsBarSplashScreen.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
+
+        lblLoading.setBackground(new java.awt.Color(255, 255, 255));
+        lblLoading.setFont(new java.awt.Font("Baloo Bhaina 2", 1, 14)); // NOI18N
+        lblLoading.setForeground(new java.awt.Color(51, 102, 255));
+        lblLoading.setText("Loading");
+
+        javax.swing.GroupLayout pnlLoadingScreenLayout = new javax.swing.GroupLayout(pnlLoadingScreen);
+        pnlLoadingScreen.setLayout(pnlLoadingScreenLayout);
+        pnlLoadingScreenLayout.setHorizontalGroup(
+            pnlLoadingScreenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlLoadingScreenLayout.createSequentialGroup()
+                .addContainerGap(370, Short.MAX_VALUE)
+                .addGroup(pnlLoadingScreenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLoadingScreenLayout.createSequentialGroup()
+                        .addComponent(lblBidmoreLogoLoading)
+                        .addGap(345, 345, 345))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLoadingScreenLayout.createSequentialGroup()
+                        .addComponent(prgsBarSplashScreen, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(405, 405, 405))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLoadingScreenLayout.createSequentialGroup()
+                        .addComponent(lblLoading, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(563, 563, 563))))
+        );
+        pnlLoadingScreenLayout.setVerticalGroup(
+            pnlLoadingScreenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlLoadingScreenLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(lblBidmoreLogoLoading, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(126, 126, 126)
+                .addComponent(lblLoading)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(prgsBarSplashScreen, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(214, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlLoginScreen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(pnlLoadingScreen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(pnlLoginScreen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(pnlLoadingScreen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         pack();
@@ -779,7 +1261,7 @@ public class bidmoreapp extends javax.swing.JFrame {
 
     
     
-    // Method to add student data and populate the table
+    // Method to add product data and populate the table
     private void registerProduct(ProductModel product) {
         productList.add(product);
         DefaultTableModel model = (DefaultTableModel) tblProductList.getModel();
@@ -831,132 +1313,455 @@ public class bidmoreapp extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 
-    private void txtFldProductIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFldProductIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFldProductIDActionPerformed
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
 
-    private void btnAdd3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdd3ActionPerformed
         boolean isValid = true;
 
-        // Validating Product ID        
-        try {
-            int productId = Integer.parseInt(txtFldProductID.getText().trim());
+        // Getting the product ID to update
+        String productIdText = txtFldFindProductId.getText().trim();
 
+        // Checking for empty field for Product Id
+        if (ValidationUtil.isNullOrEmpty(productIdText)) {
+            showDialogBox("Product ID cannot be empty", "Update Failed", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Validating  Product ID format
+        try {
+            int productId = Integer.parseInt(productIdText);
             if (productId <= 0) {
-                showDialogBox("Product Id must positive", "Invalid Product Id", JOptionPane.WARNING_MESSAGE);
+                showDialogBox("Product ID must be a postive value. ", "Update Failed", JOptionPane.WARNING_MESSAGE);
                 isValid = false;
-            } 
-
-        } 
-        catch (NumberFormatException e) {
-            showDialogBox("Product Id must a number ", "Invalid Product Id", JOptionPane.WARNING_MESSAGE);
-            isValid = false;
+            }
+        } catch (NumberFormatException e) {
+            showDialogBox("Product ID must be a number", "Update Failed", JOptionPane.WARNING_MESSAGE);
+            return;
         }
-      
-        
-        // Validating Base Price     
-        try {
-            int basePrice = Integer.parseInt(txtFldBasePrice.getText().trim());
 
-            if (basePrice <= 0) {
-                showDialogBox("Base Price  must positive", "Invalid Base Price", JOptionPane.WARNING_MESSAGE);
+        // Validate Base Price
+        String basePriceText = txtFldFindBasePrice.getText().trim();
+        if (ValidationUtil.isNullOrEmpty(basePriceText)) {
+            showDialogBox("Base Price cannot be empty", "Update Failed", JOptionPane.WARNING_MESSAGE);
+            isValid = false;
+        } else {
+            try {
+                double basePrice = Double.parseDouble(basePriceText);
+                if (basePrice <= 0) {
+                    showDialogBox("Base Price must be positive value", "Update Failed", JOptionPane.WARNING_MESSAGE);
+                    isValid = false;
+                }
+            } catch (NumberFormatException e) {
+                showDialogBox("Base Price must be a number", "Update Failed", JOptionPane.WARNING_MESSAGE);
                 isValid = false;
-            } 
-
-        } 
-        catch (NumberFormatException e) {
-            showDialogBox("Base Price must a number", "Invalid Base Price", JOptionPane.WARNING_MESSAGE);
-            isValid = false;
-        }
-        
-        
-        
-       String selectedStatus = comboBoxStatus.getSelectedItem().toString();
-        
-
-       
-
-        if (isValid) {
-            // Create a ProductModel instance
-            ProductModel newProduct = new ProductModel(Integer.parseInt(txtFldProductID.getText().trim()),txtFldProductName.getText().trim(),txtFldProductType.getText().trim(),Integer.parseInt(txtFldBasePrice.getText().trim()),txtFldDescription.getText().trim(),txtFldAuctioneer.getText().trim(),selectedStatus);
-                
-            
-
-            // Check for duplicate Product  ID
-            if (checkDuplicateProduct(newProduct)) {
-                txtFldProductID.setBorder(createTitledBorder(new Color(255, 51, 0), "Product Id"));
-                showDialogBox("Product already exists.", "Duplicate Entry", JOptionPane.WARNING_MESSAGE);
-            } else {
-                // Add the product if no duplicate is found
-                productList.add(newProduct);
-                clearProductForm();
-                loadListToTable(productList);
-                txtFldProductID.setBorder(createTitledBorder(new Color(239, 192, 32), "LMU ID"));
-                showDialogBox("Product added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
             }
         }
-    }//GEN-LAST:event_btnAdd3ActionPerformed
 
-    
-     
-    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        clearProductForm();
-    }//GEN-LAST:event_btnClearActionPerformed
+        // Validating other required fields
+        if (ValidationUtil.isNullOrEmpty(txtFldFindName.getText().trim())) {
+            showDialogBox("Product Name cannot be empty", "Update Failed", JOptionPane.WARNING_MESSAGE);
+            isValid = false;
+        }
+
+        if (ValidationUtil.isNullOrEmpty(txtFldFindType.getText().trim())) {
+            showDialogBox("Product Type cannot be empty", "Update Failed", JOptionPane.WARNING_MESSAGE);
+            isValid = false;
+        }
+
+        if (ValidationUtil.isNullOrEmpty(txtFldFindAuctioneer.getText().trim())) {
+            showDialogBox("Auctioneer Name cannot be empty", "Update Failed", JOptionPane.WARNING_MESSAGE);
+            isValid = false;
+        }
+
+        if (ValidationUtil.isNullOrEmpty(txtFldFindDescription.getText().trim())) {
+            showDialogBox("Description cannot be empty", "Update Failed", JOptionPane.WARNING_MESSAGE);
+            isValid = false;
+        }
+
+        if (isValid) {
+            // Find and update the product
+            int productId = Integer.parseInt(productIdText);
+            boolean productFound = false;
+
+            for (ProductModel product : productList) {
+                if (product.getProductId() == productId) {
+                    // Update the product details
+                    product.setName(txtFldFindName.getText().trim());
+                    product.setType(txtFldFindType.getText().trim());
+                    product.setBasePrice(Double.parseDouble(txtFldFindBasePrice.getText().trim()));
+                    product.setDescription(txtFldFindDescription.getText().trim());
+                    product.setAuctioneerName(txtFldFindAuctioneer.getText().trim());
+                    product.setStatus(comboBoxFindStatus.getSelectedItem().toString());
+
+                    productFound = true;
+                    break;
+                }
+            }
+
+            if (productFound) {
+                // Refreshing the table with updated data
+                refreshTableWithAllData();
+
+                // Showing  success message
+                showDialogBox("Product updated successfully", "Update Successful", JOptionPane.INFORMATION_MESSAGE);
+
+                // Clearing the form and disable editing
+                btnFindClearActionPerformed(evt);
+                txtFldFindProductId.setEditable(false);
+                txtFldFindName.setEditable(false);
+                txtFldFindType.setEditable(false);
+                txtFldFindBasePrice.setEditable(false);
+                txtFldFindDescription.setEditable(false);
+                txtFldFindAuctioneer.setEditable(false);
+                comboBoxFindStatus.setEnabled(false);
+            } else {
+                showDialogBox("Product not found", "Update Failed", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnEnableUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnableUpdateActionPerformed
+
+        txtFldFindProductId.setEditable(true);
+        txtFldEnterProductId.setEditable(true);
+        txtFldFindName.setEditable(true);
+        txtFldFindType.setEditable(true);
+        txtFldFindBasePrice.setEditable(true);
+        txtFldFindDescription.setEditable(true);
+        txtFldFindAuctioneer.setEditable(true);
+        comboBoxFindStatus.setEnabled(true);
+    }//GEN-LAST:event_btnEnableUpdateActionPerformed
+
+    private void btnFindClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindClearActionPerformed
+        txtFldFindProductId.setText("");
+        txtFldEnterProductId.setText("");
+        txtFldFindName.setText("");
+        txtFldFindType.setText("");
+        txtFldFindBasePrice.setText("");
+        txtFldFindDescription.setText("");
+        txtFldFindAuctioneer.setText("");
+
+    }//GEN-LAST:event_btnFindClearActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+
+        // Getting the product ID from the input field
+        String productIdText = txtFldFindProductId.getText().trim();
+
+        // Checking if the Product ID field is empty
+        if (ValidationUtil.isNullOrEmpty(productIdText)) {
+            showDialogBox("Please enter a Product ID to delete", "Delete Failed", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            // Parsing the Product ID to an integer
+            int productId = Integer.parseInt(productIdText);
+
+            // Find the product in the list by matching Product ID
+            ProductModel productToRemove = null;
+            for (ProductModel product : productList) {
+                if (product.getProductId() == productId) {
+                    productToRemove = product;
+                    break;
+                }
+            }
+
+            if (productToRemove != null) {
+                // Removingthe product from the list
+                productList.remove(productToRemove);
+
+                // Refreshing the table to reflect the changes
+                refreshTableWithAllData();
+
+                // Showing success message
+                showDialogBox("Product deleted successfully.", "Deletion Successful=", JOptionPane.INFORMATION_MESSAGE);
+
+                //Clearing text fields after successful execution
+                btnFindClearActionPerformed(evt);
+
+            } else {
+                // If product was not found, showing a message
+                showDialogBox("No product found with ID: " + productId, "Product Not Found", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } catch (NumberFormatException e) {
+            // Handling invalid Product ID format
+            showDialogBox("Please enter a valid numeric Product ID", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+        }
+
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void comboBoxFindStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxFindStatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboBoxFindStatusActionPerformed
+
+    private void txtFldFindDescriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFldFindDescriptionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFldFindDescriptionActionPerformed
+
+    private void txtFldFindAuctioneerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFldFindAuctioneerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFldFindAuctioneerActionPerformed
+
+    private void txtFldFindBasePriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFldFindBasePriceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFldFindBasePriceActionPerformed
+
+    private void txtFldFindTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFldFindTypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFldFindTypeActionPerformed
+
+    private void txtFldFindNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFldFindNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFldFindNameActionPerformed
+
+    private void txtFldFindProductIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFldFindProductIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFldFindProductIdActionPerformed
+
+    private void btnFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindActionPerformed
+
+        // Getting the product ID from the text field
+        String productIdText = txtFldEnterProductId.getText().trim();
+
+        // Validating if the product ID is empty
+        if (ValidationUtil.isNullOrEmpty(productIdText)) {
+            showDialogBox("Please enter a Product ID to search", "Search Failed", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            int searchId = Integer.parseInt(productIdText);
+
+            ProductModel foundProduct = null;
+            for (ProductModel product : productList) {
+                if (product.getProductId() == searchId) {
+                    foundProduct = product;
+                    break;
+                }
+            }
+
+            if (foundProduct != null) {
+                // Populate the form fields with the found product's data
+                txtFldFindProductId.setText(String.valueOf((int) foundProduct.getProductId()));
+                txtFldFindName.setText(foundProduct.getName());
+                txtFldFindType.setText(foundProduct.getType());
+                txtFldFindBasePrice.setText(String.valueOf((double) foundProduct.getBasePrice()));
+                txtFldFindDescription.setText(foundProduct.getDescription());
+                txtFldFindAuctioneer.setText(foundProduct.getAuctioneerName());
+                comboBoxFindStatus.setSelectedItem(foundProduct.getStatus());
+                comboBoxFindStatus.setEnabled(false);
+
+            } else {
+                showDialogBox("No product found with ID: " + searchId, "Product Not Found", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            showDialogBox("Please enter a valid numeric Product ID", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+        }
+
+    }//GEN-LAST:event_btnFindActionPerformed
 
     private void comboBoxStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxStatusActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboBoxStatusActionPerformed
 
-    private void btnDelete4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelete4ActionPerformed
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        clearProductForm();
+    }//GEN-LAST:event_btnClearActionPerformed
+
+    private void btnAdd3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdd3ActionPerformed
+        boolean isValid = true;
+
+        // Validating if every text field is empty
+        if (areAllFieldsEmpty()) {
+            showDialogBox("Please enter all the details.", "Product Entry Failed", JOptionPane.WARNING_MESSAGE);
+            isValid = false;
+            return;
+        }
+
+        // Validating Product ID
+        String productIdText = txtFldProductID.getText().trim();
+        if (ValidationUtil.isNullOrEmpty(productIdText)) {
+            showDialogBox("Product ID cannot be empty", "Product Entry Failed", JOptionPane.WARNING_MESSAGE);
+            isValid = false;
+        }
+        else{
+            try {
+                int productId = Integer.parseInt(txtFldProductID.getText().trim());
+
+                if (productId <= 0) {
+                    showDialogBox("Product Id must positive", "Product Entry Failed", JOptionPane.WARNING_MESSAGE);
+                    isValid = false;
+                }
+
+            }
+            catch (NumberFormatException e) {
+                showDialogBox("Product Id must a number ", "Product Entry Failed", JOptionPane.WARNING_MESSAGE);
+                isValid = false;
+            }
+        }
+
+        // Validating Base Price
+        String basePriceText = txtFldBasePrice.getText().trim();
+        if (ValidationUtil.isNullOrEmpty(basePriceText)) {
+            showDialogBox("Base Price cannot be empty", "Product Entry Failed", JOptionPane.WARNING_MESSAGE);
+            isValid = false;
+        }
+        else{
+
+            try {
+                int basePrice = Integer.parseInt(txtFldBasePrice.getText().trim());
+
+                if (basePrice <= 0) {
+                    showDialogBox("Base Price  must positive", "Product Entry Failed", JOptionPane.WARNING_MESSAGE);
+                    isValid = false;
+                }
+
+            }
+            catch (NumberFormatException e) {
+                showDialogBox("Base Price must a number", "Product Entry Failede", JOptionPane.WARNING_MESSAGE);
+                isValid = false;
+            }
+        }
+
+        // Validating Auctioneer
+        String auctioneerText = txtFldAuctioneer.getText().trim();
+        if (ValidationUtil.isNullOrEmpty(auctioneerText)) {
+            showDialogBox("Auctioneer Name  is required ", " Product Entry Failed", JOptionPane.WARNING_MESSAGE);
+            isValid = false;
+        }
+
+        // Validating Description
+        String descriptionText = txtFldDescription.getText().trim();
+        if (ValidationUtil.isNullOrEmpty(descriptionText)) {
+            showDialogBox("Description of the Product is required ", " Product Entry Failed", JOptionPane.WARNING_MESSAGE);
+            isValid = false;
+        }
+
+        // Validating Type
+        String typeText = txtFldProductType.getText().trim();
+        if (ValidationUtil.isNullOrEmpty(typeText)) {
+            showDialogBox(" Type of the product must be mentioned ", " Product Entry Failed", JOptionPane.WARNING_MESSAGE);
+            isValid = false;
+        }
+
+        String selectedStatus = comboBoxStatus.getSelectedItem().toString();
+
+        if (isValid) {
+            // Create a ProductModel instance
+            ProductModel newProduct = new ProductModel(Integer.parseInt(txtFldProductID.getText().trim()),txtFldProductName.getText().trim(),txtFldProductType.getText().trim(),Integer.parseInt(txtFldBasePrice.getText().trim()),txtFldDescription.getText().trim(),txtFldAuctioneer.getText().trim(),selectedStatus);
+
+            // Check for duplicate Product  ID
+            if (checkDuplicateProduct(newProduct)) {
+                showDialogBox("Product already exists.", "Duplicate Entry", JOptionPane.WARNING_MESSAGE);
+            } else {
+                // Add the product if no duplicate is found
+                productList.add(newProduct);
+                loadListToTable(productList);
+                showDialogBox("Product added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                clearProductForm();
+            }
+        }
+    }//GEN-LAST:event_btnAdd3ActionPerformed
+
+    private void txtFldAuctioneerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFldAuctioneerActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnDelete4ActionPerformed
+    }//GEN-LAST:event_txtFldAuctioneerActionPerformed
 
-    private void btnSortByProductIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortByProductIdActionPerformed
-        SelectionSort selectionSort = new SelectionSort();
-        loadListToTable(selectionSort.sortByProductId(productList, false));
-        
-    }//GEN-LAST:event_btnSortByProductIdActionPerformed
+    private void txtFldBasePriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFldBasePriceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFldBasePriceActionPerformed
 
-    private void txtFldSearchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFldSearchBarActionPerformed
+    private void txtFldProductIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFldProductIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFldProductIDActionPerformed
+
+    private void btnShowAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowAllActionPerformed
+        txtFldSearchBar.setText(" ");
+        refreshTableWithAllData();
+    }//GEN-LAST:event_btnShowAllActionPerformed
+
+    private void comboBoxSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxSortActionPerformed
+        JComboBox comboBox = (JComboBox) evt.getSource();
+        int selectedIndex = comboBox.getSelectedIndex();
+
+        switch (selectedIndex) {
+            case 0:
+            SelectionSort selectionSort = new SelectionSort();
+            loadListToTable(selectionSort.sortByProductId(productList, false));
+            break;
+
+            case 1:
+            InsertionSort insertionSort = new InsertionSort();
+            loadListToTable(insertionSort.sortByName(productList, false));
+            break;
+
+            case 2:
+            MergeSort mergeSort = new MergeSort();
+            loadListToTable(mergeSort.sortByBasePrice(productList, false));
+            break;
+
+        }
+    }//GEN-LAST:event_comboBoxSortActionPerformed
+
+    private void btnBinarySearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBinarySearchActionPerformed
+
         SelectionSort selectionSort = new SelectionSort();
         List<ProductModel> sortedList = selectionSort.sortByName(productList, false);
-        
+
         BinarySearch search = new BinarySearch();
         ProductModel searchedData = search.searchByName(txtFldSearchBar.getText().trim(), sortedList, 0, sortedList.size()-1);
-        if(searchedData!=null){
+
+        // Clear the existing table
+        DefaultTableModel model = (DefaultTableModel) tblProductList.getModel();
+        model.setRowCount(0);
+
+        if(searchedData != null) {
+            // Add the found product to the table with all columns
+            Object[] row = new Object[]{
+                searchedData.getProductId(),
+                searchedData.getName(),
+                searchedData.getType(),
+                searchedData.getBasePrice(),
+                searchedData.getDescription(),
+                searchedData.getAuctioneerName(),
+                searchedData.getStatus()
+            };
+            model.addRow(row);
+
+            // Select and scroll to the found row
+            tblProductList.setRowSelectionInterval(0, 0);
+            tblProductList.scrollRectToVisible(tblProductList.getCellRect(0, 0, true));
+
             System.out.println(searchedData.getName());
-        }else{
+        } else {
+            JOptionPane.showMessageDialog(this,
+                "Product Not Found",
+                "Search Result",
+                JOptionPane.INFORMATION_MESSAGE);
             System.out.println("Product Not Found");
+            refreshTableWithAllData();
+            txtFldSearchBar.setText(" ");
         }
+
+        // Refresh the table
+        tblProductList.repaint();
+    }//GEN-LAST:event_btnBinarySearchActionPerformed
+
+    private void txtFldSearchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFldSearchBarActionPerformed
+
     }//GEN-LAST:event_txtFldSearchBarActionPerformed
 
-    private void btnSortByNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortByNameActionPerformed
-        InsertionSort insertionSort = new InsertionSort();
-        loadListToTable(insertionSort.sortByName(productList, false));
-    }//GEN-LAST:event_btnSortByNameActionPerformed
+    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
+        loadScreen("LoginScreen"); // Switching to login screen
+        txtFldLoginUserName.setText("");
+        pswrdFldLoginPassword.setText("");
+    }//GEN-LAST:event_btnLogOutActionPerformed
 
-    private void btnSortByBasePriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortByBasePriceActionPerformed
-        MergeSort mergeSort = new MergeSort();
-        loadListToTable(mergeSort.sortByBasePrice(productList, false));
-    }//GEN-LAST:event_btnSortByBasePriceActionPerformed
-
-    /**
-     * Creates a custom TitledBorder with specified color and title.
-     *
-     * @param color the color for the border and title
-     * @param title the title text for the border
-     * @return a TitledBorder instance
-     */
-    private javax.swing.border.TitledBorder createTitledBorder(Color color, String title) {
-        return javax.swing.BorderFactory.createTitledBorder(
-                javax.swing.BorderFactory.createLineBorder(color, 2),
-                title,
-                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
-                javax.swing.border.TitledBorder.DEFAULT_POSITION,
-                new java.awt.Font("Segoe UI", 1, 12),
-                color
-        );
-    }
+    
+     
+   
+    
     
     /**
      * Displays a message dialog box with the given message, title, and type.
@@ -1001,6 +1806,27 @@ public class bidmoreapp extends javax.swing.JFrame {
         
         
     }
+    
+    
+    private void refreshTableWithAllData() {
+    DefaultTableModel model = (DefaultTableModel) tblProductList.getModel();
+    model.setRowCount(0);
+    
+    for(ProductModel product : productList) {
+        Object[] row = new Object[]{
+            product.getProductId(),
+            product.getName(),
+            product.getType(),
+            product.getBasePrice(),
+            product.getDescription(),
+            product.getAuctioneerName(),
+            product.getStatus()
+        };
+        model.addRow(row);
+    }
+    tblProductList.repaint();
+    
+    }
 
     
     
@@ -1028,6 +1854,15 @@ public class bidmoreapp extends javax.swing.JFrame {
     }
     
     
+    private boolean areAllFieldsEmpty() {
+    return ValidationUtil.isNullOrEmpty(txtFldProductID.getText().trim()) &&
+           ValidationUtil.isNullOrEmpty(txtFldBasePrice.getText().trim()) &&
+           ValidationUtil.isNullOrEmpty(txtFldAuctioneer.getText().trim()) &&
+           ValidationUtil.isNullOrEmpty(txtFldDescription.getText().trim()) &&
+           ValidationUtil.isNullOrEmpty(txtFldProductType.getText().trim());
+    }
+    
+    
     
     
     
@@ -1048,51 +1883,75 @@ public class bidmoreapp extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(bidmoreapp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BidmoreApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(bidmoreapp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BidmoreApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(bidmoreapp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BidmoreApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(bidmoreapp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BidmoreApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new bidmoreapp().setVisible(true);
+                new BidmoreApp().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd3;
+    private javax.swing.JButton btnBinarySearch;
     private javax.swing.JButton btnClear;
-    private javax.swing.JButton btnDelete4;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnEnableUpdate;
+    private javax.swing.JButton btnFind;
+    private javax.swing.JButton btnFindClear;
+    private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnLogin;
-    private javax.swing.JButton btnSortByBasePrice;
-    private javax.swing.JButton btnSortByName;
-    private javax.swing.JButton btnSortByProductId;
-    private javax.swing.JButton btnUpdate3;
+    private javax.swing.JButton btnShowAll;
+    private javax.swing.JButton btnUpdate;
+    private javax.swing.JComboBox<String> comboBoxFindStatus;
+    private javax.swing.JComboBox<String> comboBoxSort;
     private javax.swing.JComboBox<String> comboBoxStatus;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private java.awt.Label label1;
     private javax.swing.JLabel lblAdminHeader;
+    private javax.swing.JLabel lblAuctioneer;
+    private javax.swing.JLabel lblBasePrice;
     private javax.swing.JLabel lblBidmoreLogo;
+    private javax.swing.JLabel lblBidmoreLogoLoading;
     private javax.swing.JLabel lblDescription;
+    private javax.swing.JLabel lblDescrption1;
+    private javax.swing.JLabel lblFindBasePrice;
+    private javax.swing.JLabel lblFindBasePrice1;
+    private javax.swing.JLabel lblFindDescription;
+    private javax.swing.JLabel lblFindName;
+    private javax.swing.JLabel lblFindProductId;
+    private javax.swing.JLabel lblFindStatus;
+    private javax.swing.JLabel lblFindType1;
+    private javax.swing.JLabel lblLoading;
     private javax.swing.JLabel lblLoginHeader;
     private javax.swing.JLabel lblLogoIcon;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblPasswordIcon;
+    private javax.swing.JLabel lblProductEntry;
+    private javax.swing.JLabel lblProductID;
+    private javax.swing.JLabel lblProductName;
     private javax.swing.JLabel lblSideBarIcon;
+    private javax.swing.JLabel lblStatus;
     private javax.swing.JLabel lblTableHeader;
+    private javax.swing.JLabel lblType;
     private javax.swing.JLabel lblUserIcon;
     private javax.swing.JLabel lblUsername;
     private javax.swing.JLabel lblWelcomeMessage;
@@ -1100,13 +1959,18 @@ public class bidmoreapp extends javax.swing.JFrame {
     private javax.swing.JLabel lblloginerror;
     private javax.swing.JPanel pnlAboutUs;
     private javax.swing.JPanel pnlAddProduct;
-    private javax.swing.JPanel pnlAdmin;
     private javax.swing.JPanel pnlButton;
+    private javax.swing.JPanel pnlEntryUpdate;
+    private javax.swing.JPanel pnlFoundProduct;
     private javax.swing.JPanel pnlHomeScreen;
+    private javax.swing.JPanel pnlListings;
+    private javax.swing.JPanel pnlLoadingScreen;
     private javax.swing.JPanel pnlLoginScreen;
     private javax.swing.JPanel pnlMainScreen;
-    private javax.swing.JPanel pnlProductView;
+    private javax.swing.JPanel pnlProductEntry;
     private javax.swing.JPanel pnlSideBar;
+    private javax.swing.JPanel pnlUpdates;
+    private javax.swing.JProgressBar prgsBarSplashScreen;
     private javax.swing.JPasswordField pswrdFldLoginPassword;
     private javax.swing.JScrollPane spTblProduct;
     private javax.swing.JTabbedPane tabpaneMain;
@@ -1114,6 +1978,13 @@ public class bidmoreapp extends javax.swing.JFrame {
     private javax.swing.JTextField txtFldAuctioneer;
     private javax.swing.JTextField txtFldBasePrice;
     private javax.swing.JTextField txtFldDescription;
+    private javax.swing.JTextField txtFldEnterProductId;
+    private javax.swing.JTextField txtFldFindAuctioneer;
+    private javax.swing.JTextField txtFldFindBasePrice;
+    private javax.swing.JTextField txtFldFindDescription;
+    private javax.swing.JTextField txtFldFindName;
+    private javax.swing.JTextField txtFldFindProductId;
+    private javax.swing.JTextField txtFldFindType;
     private javax.swing.JTextField txtFldLoginUserName;
     private javax.swing.JTextField txtFldProductID;
     private javax.swing.JTextField txtFldProductName;

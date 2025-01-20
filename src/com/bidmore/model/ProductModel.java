@@ -34,6 +34,7 @@ public class ProductModel {
     
     
     // Getters and Setters
+    
     public int getProductId() {
         return productId;
     }
@@ -41,7 +42,6 @@ public class ProductModel {
     public void setProductId(int productId) {
         this.productId = productId;
     }
-
     public String getName() {
         return name;
     }

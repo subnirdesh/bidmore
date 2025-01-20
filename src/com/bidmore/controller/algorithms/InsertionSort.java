@@ -42,6 +42,6 @@ public class InsertionSort {
     }
     
     return dataToSort;
-}
+    }
     
 }

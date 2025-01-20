@@ -25,7 +25,7 @@ public class MergeSort {
     // Call the main merge sort method
     mergeSort(dataToSort, 0, dataToSort.size() - 1, isDesc);
     return dataToSort;
-}
+    }
 
 private void mergeSort(List<ProductModel> data, int left, int right, boolean isDesc) {
     if (left < right) {

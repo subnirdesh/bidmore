@@ -72,7 +72,7 @@ public class SelectionSort {
     }
     
     return dataToSort;
-}
+    }
 
 
 
