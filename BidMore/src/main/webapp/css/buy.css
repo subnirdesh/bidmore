@@ -1,0 +1,265 @@
+:root {
+    --primary-color: #3a86ff; /* A slightly deeper blue */
+    --secondary-color: #0056b3; /* Standard blue */
+    --accent-color: #28a745; /* Green for positive actions */
+    --light-bg: #f2f2f2;
+    --white-color: #ffffff;
+    --dark-text: #343a40;
+    --light-text: #6c757d;
+    --border-color: #dee2e6;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+    --font-family: 'Poppins', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+}
+
+body {
+    background-color: var(--light-bg);
+    color: var(--dark-text);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 15px 20px; /* Adjusted to account for fixed header */
+}
+
+/* Filters section */
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.filter-button {
+    display: flex;
+    align-items: center;
+    background-color: var(--white-color);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.active-filter {
+    display: flex;
+    align-items: center;
+    background-color: var(--white-color);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 8px 15px;
+    font-size: 14px;
+}
+
+.close-filter {
+    margin-left: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.dropdown-filter {
+    display: flex;
+    align-items: center;
+    background-color: var(--white-color);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.dropdown-icon {
+    margin-left: 8px;
+    font-size: 10px;
+}
+
+/* Product listings */
+.product-listings {
+  display: flex;
+  flex-direction: column;
+  gap: 18px; /* Slightly increased for better spacing */
+}
+
+.product-row {
+  display: flex;
+  background-color: var(--white-color);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* More refined shadow */
+  padding: 18px; /* Slightly more padding */
+  transition: all 0.3s ease;
+  border: 1px solid rgba(230, 230, 230, 0.8); /* Subtle border */
+}
+
+.product-row:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px); /* Subtle lift effect */
+}
+
+.product-image-container {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin-right: 24px; /* Slightly more spacing */
+  flex-shrink: 0;
+  border-radius: 8px; /* Rounded container */
+  overflow: hidden; /* Keep images within rounded container */
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 6px;
+  transition: transform 0.5s ease; /* Image zoom effect */
+}
+
+.product-row:hover .product-image {
+  transform: scale(1.03); /* Subtle zoom on hover */
+}
+
+.watch-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.9); /* More opaque */
+  border: none;
+  border-radius: 50%;
+  width: 34px; /* Slightly larger */
+  height: 34px; /* Slightly larger */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #777; /* Darker for better visibility */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.watch-button:hover {
+  background: #ffffff;
+  color: #ff3d47; /* Brighter red for heart */
+  transform: scale(1.1); /* Slight pop effect */
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.product-info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0; /* Top and bottom padding */
+}
+
+.product-name {
+  font-size: 17px; /* Slightly larger */
+  font-weight: 700; /* Bolder */
+  margin-bottom: 8px;
+  color: var(--dark-text);
+  line-height: 1.3; /* Better readability */
+}
+
+.product-meta {
+  font-size: 14px;
+  color: var(--light-text);
+  margin-bottom: 16px; /* More space */
+  letter-spacing: 0.2px; /* Subtle letter spacing */
+}
+
+.product-price-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px; /* More space */
+  align-items: flex-start; /* Better alignment */
+}
+
+.price-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.current-price {
+  font-size: 20px; /* Larger for emphasis */
+  font-weight: 700; /* Bolder */
+  color: #2a65db; /* Distinctive color for price */
+}
+
+.shipping-info {
+  font-size: 14px;
+  color: var(--light-text);
+  margin-top: 6px;
+}
+
+.bid-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.bid-count {
+  font-size: 14px;
+  font-weight: 600; /* Medium bold */
+  color: var(--dark-text);
+}
+
+.time-left {
+  font-size: 14px;
+  color: var(--dark-text);
+  margin-top: 6px;
+  font-weight: 500; /* Semi-bold */
+}
+
+.time-left.warning {
+  color: #e53935; /* Keep red for urgency */
+  font-weight: 700; /* Bolder for emphasis */
+}
+
+.bid-form {
+  display: flex;
+  gap: 12px; /* Slightly more spacing */
+  margin-top: auto;
+}
+
+.bid-input {
+  flex-grow: 1;
+  padding: 12px 14px; /* More padding */
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Inset shadow */
+  transition: all 0.2s ease;
+}
+
+.bid-input:focus {
+  border-color: #2a65db; /* Highlight when focused */
+  box-shadow: 0 0 0 3px rgba(42, 101, 219, 0.15); /* Focus ring */
+  outline: none;
+}
+
+.bid-button {
+  background-color: #2a65db; /* Matching blue instead of green */
+  color: var(--white-color);
+  padding: 12px 18px; /* More padding */
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  font-weight: 600; /* Bolder */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase; /* More prominent */
+  letter-spacing: 0.5px; /* Letter spacing */
+}
+
+.bid-button:hover {
+  background-color: #1d4eb8; /* Darker blue on hover */
+  box-shadow: 0 4px 8px rgba(29, 78, 184, 0.25); /* Shadow on hover */
+}
