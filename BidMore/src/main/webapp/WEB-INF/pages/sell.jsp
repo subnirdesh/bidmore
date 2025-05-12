@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,8 +23,30 @@
 	<jsp:include page="header.jsp" />
 	<div class="container">
 
+		<div class="message-container">
+
+			<!-- Display error message if available -->
+			<c:if test="${not empty error}">
+				<div class="error-container">
+					<span class="alert-icon">!</span>
+					<p class="error-text">${error}</p>
+				</div>
+			</c:if>
+
+			<!-- Display success message if available -->
+			<c:if test="${not empty sessionScope.successMessage}">
+				<div class="success-container">
+					<span class="success-icon">✓</span>
+					<p class="success-text">${sessionScope.successMessage}</p>
+				</div>
+				<c:remove var="successMessage" scope="session" />
+			</c:if>
+
+		</div>
+
+
 		<div class="form-container">
-			<form action="processListing.jsp" method="post"
+			<form action="${pageContext.request.contextPath}/sell" method="post"
 				enctype="multipart/form-data" class="listing-form">
 				<div class="form-sections">
 					<!-- Item Details Section -->
@@ -55,16 +79,24 @@
 						</div>
 
 						<div class="form-group">
+							<label for="itemCategory">Category</label> <select
+								id="itemCategory" name="category" required>
+								<option value="">Select Category</option>
+								<option value="Fashion">Fashion</option>
+								<option value="Electronics">Electronics</option>
+								<option value="Home and Kitchen">Home and Kitchen</option>
+								<option value="Collectibles and Art">Collectibles and
+									Art</option>
+								<option value="Motor">Motor</option>
+							</select>
+						</div>
+
+						<div class="form-group">
 							<label for="itemImage">Item Image</label>
 							<div class="file-input-container">
-								<input type="file" id="itemImage" name="image_path"
-									accept="image/*" required>
+								<input type="file" id="itemImage" name="image_path" required onchange="this.nextElementSibling.nextElementSibling.textContent = this.files[0]?.name || 'No file chosen'">
 								<div class="file-input-button">Choose File</div>
 								<span class="file-name">No file chosen</span>
-							</div>
-							<div class="image-preview-container">
-								<img id="imagePreview" src="#" alt="Image Preview"
-									class="image-preview">
 							</div>
 						</div>
 					</div>
@@ -87,13 +119,6 @@
 								sold</div>
 						</div>
 
-						<div class="form-group">
-							<label for="buyNowPrice">Buy Now Price ($)</label> <input
-								type="number" id="buyNowPrice" name="buynow_price" min="0.01"
-								step="0.01" required placeholder="e.g. 90.00">
-							<div class="helper-text">Price at which a buyer can
-								immediately purchase the item</div>
-						</div>
 
 						<div class="form-group">
 							<label for="auctionDuration">Auction Duration</label> <select
@@ -102,8 +127,6 @@
 								<option value="3">3 Days</option>
 								<option value="5">5 Days</option>
 								<option value="7">7 Days</option>
-								<option value="10">10 Days</option>
-								<option value="14">14 Days</option>
 							</select>
 						</div>
 					</div>
@@ -117,7 +140,7 @@
 			</form>
 		</div>
 	</div>
-<%-- Footer--%>
+	<%-- Footer--%>
 	<jsp:include page="footer.jsp" />
 </body>
 </html>

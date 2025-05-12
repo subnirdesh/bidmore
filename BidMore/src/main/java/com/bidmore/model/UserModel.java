@@ -22,21 +22,6 @@ public class UserModel {
 
 	}
 
-	// Parameterized Constructor with RoleModel Object
-	public UserModel(int userId, String userName, String password, String email, String phone, LocalDate birthdate,
-			String firstName, String lastName, RoleModel role, Timestamp registrationDate, String status) {
-		this.userId = userId;
-		this.userName = userName;
-		this.password = password;
-		this.email = email;
-		this.phone = phone;
-		this.birthDate = birthdate;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.role = role;
-		this.registrationDate = registrationDate;
-		this.status = status;
-	}
 
 	// Parameterized Constructor with roleID
 	public UserModel(int userId, String userName, String password, String email, String phone, LocalDate birthdate,
@@ -66,11 +51,24 @@ public class UserModel {
 		this.imageUrl=imageUrl;
 	}
 	
+	public UserModel(int userId,String firstName,String lastName,String userName, LocalDate birthdate, String email, String phone, 
+				String imageUrl) {
+		this.userId=userId;
+		this.userName = userName;
+		this.email = email;
+		this.phone = phone;
+		this.birthDate = birthdate;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.imageUrl=imageUrl;
+	}
+	
 	public UserModel(String userName,String password) {
 		this.userName=userName;
 		this.password=password;
 				
 	}
+	
 	
 
 	public int getUserId() {
@@ -178,7 +176,7 @@ public class UserModel {
 	}
 
 	public void setImageUrl(String imageUrl) {
-		imageUrl = imageUrl;
+		this.imageUrl = imageUrl;
 	}
 
 }

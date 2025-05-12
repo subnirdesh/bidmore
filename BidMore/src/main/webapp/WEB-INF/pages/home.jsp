@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,114 +80,45 @@
 
 		<!-- Featured Auctions Section -->
 		<section class="featured-auctions" id="auctions">
-			<div class="container">
-				<div class="section-header">
-					<h2>
-						Hot Auctions <span class="accent">Ending Soon</span>
-					</h2>
-					<a href="${pageContext.request.contextPath}/auctions"
-						class="view-all">View All <i class="fas fa-arrow-right"></i></a>
-				</div>
 
-				<div class="auction-grid">
-					<!-- This block will be repeated for each auction from the database -->
-					<div class="auction-card">
-						<div class="auction-image">
-							<img
-								src="${pageContext.request.contextPath}/resources/images/items/nikeairmax.png"
-								alt="Nike Air Max" loading="lazy">
-							<div class="time-badge">
-								<i class="far fa-clock"></i> 1d 8h
+			<div class="section-header">
+				<h2>
+					Hot Auctions <span class="accent">Ending Soon</span>
+				</h2>
+				<a href="${pageContext.request.contextPath}/buy"
+					class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+			</div>
+			<div class="auction-grid">
+				<!-- Using varStatus to track the iteration index and limit to first 4 items -->
+				<c:forEach items="${auctions}" var="auction" varStatus="status">
+					<!-- Only display the first 4 auctions -->
+					<c:if test="${status.index < 4}">
+						<div class="auction-card">
+							<div class="auction-image">
+								<img
+									src="${pageContext.request.contextPath}${auction.item.imagePath}"
+									alt="${auction.item.itemName}" loading="lazy">
+								<div class="time-badge ${auction.hoursLeft< 12 ? 'urgent' : ''}">
+									<i class="far fa-clock"></i> ${auction.hoursLeft} Hours Left
+								</div>
+							</div>
+							<div class="auction-content">
+								<h3 class="auction-title">${auction.item.itemName}</h3>
+								<a
+									href="${pageContext.request.contextPath}/buy?id=${auction.auctionId}"
+									class="btn-bid">Bid Now</a>
 							</div>
 						</div>
-						<div class="auction-content">
-							<h3 class="auction-title">Nike Air Max</h3>
-							<div class="bid-info">
-								<div class="current-bid">
-									<span class="label">Current Bid</span> <span class="amount">$250</span>
-								</div>
-								<div class="bid-count">
-									<span class="count">8</span> <span class="label">Bids</span>
-								</div>
-							</div>
-							<a href="${pageContext.request.contextPath}/auction?id=1"
-								class="btn-bid">Bid Now</a>
-						</div>
-					</div>
+					</c:if>
+				</c:forEach>
 
-					<div class="auction-card">
-						<div class="auction-image">
-							<img
-								src="${pageContext.request.contextPath}/resources/images/items/ergonomicchair.jpg"
-								alt="Antique Vase" loading="lazy">
-							<div class="time-badge">
-								<i class="far fa-clock"></i> 3d 2h
-							</div>
-						</div>
-						<div class="auction-content">
-							<h3 class="auction-title">Ergonomic Chair</h3>
-							<div class="bid-info">
-								<div class="current-bid">
-									<span class="label">Current Bid</span> <span class="amount">$800</span>
-								</div>
-								<div class="bid-count">
-									<span class="count">12</span> <span class="label">Bids</span>
-								</div>
-							</div>
-							<a href="${pageContext.request.contextPath}/auction?id=2"
-								class="btn-bid">Bid Now</a>
-						</div>
+				<c:if test="${empty auctions}">
+					<div class="no-items-message">
+						<p>No auction items available at the moment. Please check back
+							later!</p>
 					</div>
-
-					<div class="auction-card">
-						<div class="auction-image">
-							<img
-								src="${pageContext.request.contextPath}/resources/images/items/alchemist.jpg"
-								alt="Signed Baseball" loading="lazy">
-							<div class="time-badge urgent">
-								<i class="far fa-clock"></i> Ends Soon!
-							</div>
-						</div>
-						<div class="auction-content">
-							<h3 class="auction-title">Alchemist </h3>
-							<div class="bid-info">
-								<div class="current-bid">
-									<span class="label">Starting Bid</span> <span class="amount">$10</span>
-								</div>
-								<div class="bid-count">
-									<span class="count">0</span> <span class="label">Bids</span>
-								</div>
-							</div>
-							<a href="${pageContext.request.contextPath}/auction?id=3"
-								class="btn-bid">Bid Now</a>
-						</div>
-					</div>
-
-					<div class="auction-card">
-						<div class="auction-image">
-							<img
-								src="${pageContext.request.contextPath}/resources/images/items/acousticguitar.png"
-								alt="Gaming Laptop" loading="lazy">
-							<div class="time-badge">
-								<i class="far fa-clock"></i> 18h
-							</div>
-						</div>
-						<div class="auction-content">
-							<h3 class="auction-title">Acoustic Guitar</h3>
-							<div class="bid-info">
-								<div class="current-bid">
-									<span class="label">Current Bid</span> <span class="amount">$980</span>
-								</div>
-								<div class="bid-count">
-									<span class="count">5</span> <span class="label">Bids</span>
-								</div>
-							</div>
-							<a href="${pageContext.request.contextPath}/auction?id=4"
-								class="btn-bid">Bid Now</a>
-						</div>
-					</div>
-					<!-- End of repeated block -->
-				</div>
+				</c:if>
+			</div>
 			</div>
 		</section>
 
@@ -260,7 +193,7 @@
 				</div>
 			</div>
 		</section>
-		
+
 		<!-- Start Selling Section -->
 		<section class="start-selling" id="sell">
 			<div class="container">

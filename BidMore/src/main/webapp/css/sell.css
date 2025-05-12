@@ -54,8 +54,8 @@ body {
 }
 
 .form-section {
-    flex: 1 0 calc(50% - 15px);
-    min-width: 300px;
+    flex: 1 0 calc(50% - 20px);
+    min-width: 350px;
 }
 
 .section-title {
@@ -115,7 +115,7 @@ textarea {
     position: relative;
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 input[type="file"] {
@@ -198,4 +198,49 @@ input[type="file"] {
 .btn-secondary:hover {
     background-color: #d4d4d4;
 }
+.message-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 0 15px;
+}
 
+.error-container,
+.success-container {
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+.error-container {
+  background-color: #ffe5e5;
+  color: #a94442;
+  border: 1px solid #f5c6cb;
+}
+
+.success-container {
+  background-color: #e6ffed;
+  color: #256029;
+  border: 1px solid #b5e4c7;
+}
+
+.alert-icon,
+.success-icon {
+  font-size: 20px;
+  font-weight: bold;
+  margin-right: 10px;
+  display: inline-block;
+  width: 24px;
+  text-align: center;
+}
+
+.error-text,
+.success-text {
+  margin: 0;
+  line-height: 1.5;
+}

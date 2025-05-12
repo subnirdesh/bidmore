@@ -1,3 +1,4 @@
+
 package com.bidmore.controller;
 
 import java.io.IOException;
@@ -29,7 +30,6 @@ import jakarta.servlet.http.Part;
 
 public class RegistrationController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private RedirectUtil redirectUtil;
 	private RegisterService registerService;
 
 	/**
@@ -43,7 +43,6 @@ public class RegistrationController extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		// Initialize dependencies in init()
-		this.redirectUtil = new RedirectUtil();
 		this.registerService = new RegisterService();
 
 	}
@@ -76,7 +75,8 @@ public class RegistrationController extends HttpServlet {
 
 			boolean imageUploaded;
 			try {
-				imageUploaded = uploadImage(req);
+				imageUploaded = ImageUtil.uploadImage(req.getPart("image"), req.getParameter("userName"), "users");
+						
 			} catch (IOException | ServletException e) {
 				handleError(req, resp, "An error occurred while uploading the image. Please try again later!");
 				e.printStackTrace(); // Log the error
@@ -96,7 +96,7 @@ public class RegistrationController extends HttpServlet {
 				return;
 			} else if (isAdded) {
 
-				handleSuccess(req, resp, "Your account is successfully created!", "/WEB-INF/pages/home.jsp");
+				handleSuccess(req, resp, "Your account is successfully created!", "/WEB-INF/pages/login.jsp");
 
 			} else {
 				handleError(req, resp, "Could not register your account. Please try again later!");
@@ -156,7 +156,7 @@ public class RegistrationController extends HttpServlet {
 		// Validating if username begins with letter and only contains alphabets and
 		// numeric values
 		if (!ValidationUtil.isAlphaNumericStartingWithLetters(userName))
-			return "Username must start with a letter and contain only letters and numbers.";
+			return "Username must start with a letter and contain only letters and numbers begining with letters.";
 
 		// Validating email
 		if (!ValidationUtil.isValidEmail(email))
@@ -186,9 +186,9 @@ public class RegistrationController extends HttpServlet {
 			return "The phone is already registered in our system.";
 		}
 		// Checking into database if the email already exists
-				if (registerService.isEmailDuplicate(userName)) {
-					return "The email is already registered in our system.";
-				}
+		if (registerService.isEmailDuplicate(email)) {
+			return "The email is already registered in our system.";
+		}
 
 		try {
 			Part image = request.getPart("image");
@@ -222,29 +222,17 @@ public class RegistrationController extends HttpServlet {
 		Part image = req.getPart("image");
 
 		if (image != null && image.getSize() > 0) {
-			String imageName = ImageUtil.getImageNameFromPart(image);
-			// Set the full path, not just the filename
-			imageUrl = "/resources/images/users/" + imageName;
+			String originalImageName = ImageUtil.getImageNameFromPart(image);
+			String username = req.getParameter("userName");
+			String savedImageName = username + "_" + originalImageName; 
+			
+			// Settings the full path, not just the filename
+			// Setting the imageUrl to use the saved filename
+			imageUrl = "/userimages/users/" + savedImageName;
 		}
 
 		return new UserModel(userName, password, email, phone, birthdate, firstName, lastName, imageUrl);
 
-	}
-
-	private boolean uploadImage(HttpServletRequest req) throws IOException, ServletException {
-		Part image = req.getPart("image");
-		if (image == null || image.getSize() == 0) {
-			return true;
-		}
-
-		try {
-
-			String username = req.getParameter("userName");
-			return ImageUtil.uploadImage(image, username, "users");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
 	}
 
 	private void handleSuccess(HttpServletRequest req, HttpServletResponse resp, String message, String redirectPage)

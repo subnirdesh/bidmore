@@ -93,7 +93,7 @@
 				<div class="form-row">
 					<div class="form-group">
 						<label for="image">Profile Picture:</label> <input type="file"
-						id="image" name="image">
+						id="image" name="image" required>
 					</div>
 					
 				</div>

@@ -71,39 +71,39 @@ public class ImageUtil {
 	 * @return {@code true} if the file was successfully uploaded, {@code false}
 	 *         otherwise.
 	 */
-	public static boolean uploadImage(Part part, String identifier, String saveFolder) {
-		String savePath = getSavePath(saveFolder);
-		File fileSaveDir = new File(savePath);
 
-		// Ensure the directory exists
-		if (!fileSaveDir.exists()) {
-			if (!fileSaveDir.mkdirs()) {
-				System.err.println("Failed to create directory: " + savePath);
-				return false; // Failed to create the directory
-			}
-		}
-		try {
-			// Get the image name
-			String imageName = identifier + "_"+getImageNameFromPart(part);
-			// Create the file path
-			String filePath = savePath + "/" + imageName;
-			// Write the file to the server
-			part.write(filePath);
-			return true; // Upload successful
-		} catch (IOException e) {
-			e.printStackTrace(); // Log the exception
-			return false; // Upload failed
-		}
-	}
-	
-	
-	public static String getSavePath(String saveFolder) {
-	    String basePath = "/Users/nirdeshsubedi/eclipse-s/BidMore/src/main/webapp/resources/images/";
-	    String fullPath = basePath + saveFolder + "/";
-	    
-	    // Creating log to help with debugging
-	    System.out.println("Using image save path: " + fullPath);
-	    
-	    return fullPath;
+	public static boolean uploadImage(Part part, String identifier, String saveFolder) { 
+	    // TODO: Make this base path configurable (e.g., read from properties)
+	    String persistentBasePath = "/Users/nirdeshsubedi/bidmore_uploads/images/"; 
+	    String savePath = persistentBasePath + saveFolder + File.separator; 
+
+	    File fileSaveDir = new File(savePath);
+
+	    // Ensure the directory exists (for the persistent location)
+	    if (!fileSaveDir.exists()) {
+	        if (!fileSaveDir.mkdirs()) {
+	            System.err.println("Failed to create persistent directory: " + savePath);
+	            return false;
+	        }
+	    }
+
+	    try {
+	        String originalImageName = getImageNameFromPart(part);
+	        String savedImageName = identifier + "_" + originalImageName;
+	        String filePath = savePath + savedImageName;
+
+	        System.out.println("ImageUtil: Saving to persistent path: " + filePath); // Logging the actual save path
+	        part.write(filePath);
+	        System.out.println("ImageUtil: File written successfully to persistent storage!");
+	        return true;
+	    } catch (IOException e) {
+	        System.err.println("ImageUtil: IOException during persistent file write:");
+	        e.printStackTrace();
+	        return false;
+	    } catch (Exception e) {
+	         System.err.println("ImageUtil: Unexpected Exception during persistent file write:");
+	         e.printStackTrace();
+	         return false;
+	    }
 	}
 }

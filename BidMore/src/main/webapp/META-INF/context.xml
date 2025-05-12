@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Context configuration for your BidMore web application -->
+<Context>
+    <Resources>
+        <!-- Mapping for User Images -->
+        <!-- When a request comes in like /BidMore/userimages/some_path/filename.png -->
+        <!-- Tomcat will look for /some_path/filename.png inside the 'base' directory -->
+        <PreResources className="org.apache.catalina.webresources.DirResourceSet"
+                      base="/Users/nirdeshsubedi/bidmore_uploads/images/"
+                      webAppMount="/userimages"/>
+
+        <!-- Mapping for Item Images -->
+        <!-- When a request comes in like /BidMore/itemimages/some_path/filename.jpg -->
+        <!-- Tomcat will look for /some_path/filename.jpg inside the 'base' directory -->
+        <PreResources className="org.apache.catalina.webresources.DirResourceSet"
+                      base="/Users/nirdeshsubedi/bidmore_uploads/images/"
+                      webAppMount="/itemimages"/>
+
+      
+         <PreResources className="org.apache.catalina.webresources.DirResourceSet"
+                      base="${catalina.base}/wtpwebapps/BidMore/resources"
+                      webAppMount="/resources"/>
+
+
+    </Resources>
+
+    
+
+</Context>

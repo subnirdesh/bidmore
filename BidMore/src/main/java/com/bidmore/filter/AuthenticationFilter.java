@@ -42,13 +42,13 @@ public class AuthenticationFilter implements Filter {
 		String uri = req.getRequestURI();
 
 		// Allowing access to resources
-		if (uri.endsWith(".png") || uri.endsWith(".jpg") || uri.endsWith(".css")) {
+		if (uri.endsWith(".png") || uri.endsWith(".jpg") || uri.endsWith(".css")||uri.endsWith(".jpeg")) {
 			chain.doFilter(request, response);
 			return;
 		}
 
 		boolean isLoggedIn = SessionUtil.getAttribute(req, "username") != null;
-		String userRole = CookieUtil.getCookie(req, "role") != null ? CookieUtil.getCookie(req, "role").getValue()
+		String userRole = SessionUtil.getAttribute(req, "role") != null ? (String) SessionUtil.getAttribute(req, "role")
 				: null;
 
 		if ("admin".equals(userRole)) {

@@ -64,7 +64,7 @@ public class LoginController extends HttpServlet {
 
 		// Validate for empty fields
 		if (ValidationUtil.isNullOrEmpty(userName) || ValidationUtil.isNullOrEmpty(password)) {
-			// Handle empty field error
+			// Handling empty field error
 			String errorMessage = "Username and password cannot be empty";
 			redirectUtil.redirect("error", errorMessage, "WEB-INF/pages/login.jsp", req, resp);
 			return; // Important to return here to stop further processing
@@ -74,13 +74,15 @@ public class LoginController extends HttpServlet {
 		Boolean loginStatus = loginService.loginUser(userModel);
 
 		if (loginStatus != null && loginStatus) {
-			// Creating a Session
-			SessionUtil.setAttribute(req, "username", userName);
 			if (userName.equals("admin")) {
-				CookieUtil.addCookie(resp, "role", "admin", 5 * 30);
+				CookieUtil.addCookie(resp, "username", userName, 5 * 30);
+				SessionUtil.setAttribute(req, "role", "admin");
+				SessionUtil.setAttribute(req, "username", userName);
 				resp.sendRedirect(req.getContextPath() + "/dashboard"); // Redirecting to /dashboard
 			} else {
-				CookieUtil.addCookie(resp, "role", "user", 5 * 30);
+				CookieUtil.addCookie(resp, "username", userName, 5 * 30);
+				SessionUtil.setAttribute(req, "role", "user");
+				SessionUtil.setAttribute(req, "username", userName);
 				resp.sendRedirect(req.getContextPath() + "/home"); // Redirecting to Home
 			}
 		} else {

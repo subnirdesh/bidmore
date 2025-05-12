@@ -12,6 +12,10 @@
 		<servlet-name>default</servlet-name>
 		<url-pattern>/css/*</url-pattern>
 		<url-pattern>/resources/*</url-pattern>
+		<url-pattern>/userimages/*</url-pattern>
+		<url-pattern>/itemimages/*</url-pattern>
+
 	</servlet-mapping>
+
 
 </web-app>

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+s<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
@@ -48,7 +48,7 @@
 					</c:choose>
 				</div>
 
-				<div class="profile-greeting">Hi, Nirdesh</div>
+				<div class="profile-greeting">Hi,${user.firstName}</div>
 				<div class="profile-actions hidden">
 					<label for="image-upload" class="btn upload-btn"> <i
 						class="fas fa-camera"></i> Upload New Photo
@@ -71,25 +71,23 @@
 							<div class="form-grid">
 								<div class="form-group">
 									<label for="firstName">First Name</label> <input type="text"
-										id="firstName" name="firstName" value="Nirdesh"
+										id="firstName" name="firstName" value="${user.firstName}"
 										disabled>
 								</div>
 								<div class="form-group">
 									<label for="lastName">Last Name</label> <input type="text"
-										id="lastName" name="lastName" value="Subedi"
-										disabled>
+										id="lastName" name="lastName" value=${user.lastName } disabled>
 								</div>
 								<div class="form-group">
 									<label for="userName">Username</label> <input type="text"
-										id="userName" name="userName" value="nirdeshsub123"
+										id="userName" name="userName" value="${user.userName}"
 										disabled>
 								</div>
 								<div class="form-group">
 									<label for="birthday">Birthday</label>
-									<fmt:formatDate value="${user.birthdate}" pattern="yyyy-MM-dd"
-										var="formattedBirthdate" />
+									<c:set var="dateStr" value="${user.birthDate.toString()}" />
 									<input type="date" id="birthday" name="birthday"
-										value="2004-12-11" disabled>
+										value="${dateStr}" disabled>
 								</div>
 							</div>
 						</section>
@@ -101,12 +99,12 @@
 							<div class="form-grid">
 								<div class="form-group">
 									<label for="email">Email Address</label> <input type="email"
-										id="email" name="email" value="subn@yahoo.com" disabled>
+										id="email" name="email" value="${user.email}" disabled>
 								</div>
 								<div class="form-group">
 									<label for="phone">Phone Number</label> <input type="tel"
-										id="phone" name="phone" value="9811001101"
-										placeholder="N/A" disabled>
+										id="phone" name="phone" placeholder="N/A"
+										value="${user.phone}" disabled>
 								</div>
 							</div>
 						</section>
@@ -115,24 +113,6 @@
 							<h3>
 								<i class="fas fa-lock"></i> Security
 							</h3>
-							<%-- Password fields are hidden by default --%>
-							<div class="form-grid hidden" id="password-fields">
-								<div class="form-group full-width">
-									<label for="current-password">Current Password</label> <input
-										type="password" id="current-password" name="currentPassword"
-										placeholder="Enter current password">
-								</div>
-								<div class="form-group">
-									<label for="new-password">New Password</label> <input
-										type="password" id="new-password" name="newPassword"
-										placeholder="Minimum 8 characters">
-								</div>
-								<div class="form-group">
-									<label for="confirm-password">Confirm New Password</label> <input
-										type="password" id="confirm-password" name="confirmPassword"
-										placeholder="Re-enter new password">
-								</div>
-							</div>
 							<%-- Change Password button is always visible, but fields are toggled --%>
 							<button type="button" id="change-password-btn"
 								class="btn secondary-btn">
@@ -157,6 +137,62 @@
 
 	<%-- Footer --%>
 	<jsp:include page="footer.jsp" />
+
+	<%-- JavaScrpit got toggling edit profile functionality --%>
+	<script>
+	document.addEventListener('DOMContentLoaded', function() {
+	    // Get references to elements
+	    const editToggleBtn = document.getElementById('edit-toggle');
+	    const profileForm = document.getElementById('profile-form');
+	    const formActions = document.querySelector('.form-actions');
+	    const profileActions = document.querySelector('.profile-actions');
+	    const cancelBtn = document.getElementById('cancel-btn');
+	    // Function to toggle edit mode
+	    function toggleEditMode() {
+	        // Toggle button text
+	        if (editToggleBtn.innerHTML.includes('Edit Profile')) {
+	            editToggleBtn.innerHTML = '<i class="fas fa-times"></i> Cancel Editing';
+	            // Show form actions and profile image upload option
+	            formActions.classList.remove('hidden');
+	            profileActions.classList.remove('hidden');
+	            
+	            // Enable all form fields except password fields
+	            const inputs = profileForm.querySelectorAll('input:not([id^="current-password"]):not([id^="new-password"]):not([id^="confirm-password"])');
+	            inputs.forEach(input => {
+	                input.disabled = false;
+	            });
+	        } else {
+	            editToggleBtn.innerHTML = '<i class="fas fa-pencil-alt"></i> Edit Profile';
+	            // Hide form actions and profile image upload option
+	            formActions.classList.add('hidden');
+	            profileActions.classList.add('hidden');
+	            passwordFields.classList.add('hidden');
+	            
+	            // Disable all form fields
+	            const inputs = profileForm.querySelectorAll('input');
+	            inputs.forEach(input => {
+	                input.disabled = true;
+	            });
+	        }
+	    }
+	    
+	    // Add click event for edit toggle button
+	    editToggleBtn.addEventListener('click', toggleEditMode);
+	    
+	    // Add click event for cancel button
+	    cancelBtn.addEventListener('click', function() {
+	        // Reset form to original values
+	        profileForm.reset();
+	        // Switch back to view mode
+	        toggleEditMode();
+	    });
+	    
+	    // Toggle password fields visibility
+	    changePasswordBtn.addEventListener('click', function() {
+	        passwordFields.classList.toggle('hidden');
+	    });
+	});
+	</script>
 
 </body>
 </html>
