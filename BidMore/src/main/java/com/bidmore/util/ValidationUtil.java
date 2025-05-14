@@ -35,7 +35,7 @@ public class ValidationUtil {
 	public static boolean isAlphaNumericStartingWithLetters(String value) {
 		// ^^[a-zA-Z] --> must begin with a alphabet
 		// [a-zA-Z0-9]* --> remaining char can occur zero or more times
-		return value != null && value.matches("^[a-zA-Z][a-zA-Z0-9]*$");
+		return value != null && value.trim().matches("^[a-zA-Z][a-zA-Z0-9]*$");
 
 	}
 

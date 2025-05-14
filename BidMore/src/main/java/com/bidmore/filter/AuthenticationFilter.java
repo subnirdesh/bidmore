@@ -30,6 +30,7 @@ public class AuthenticationFilter implements Filter {
 	private static final String PORTFOLIO = "/portfolio";
 	private static final String BUY = "/buy";
 	private static final String SELL = "/sell";
+	private static final String PASSWORD = "password";
 
 
 	@Override
@@ -68,7 +69,7 @@ public class AuthenticationFilter implements Filter {
 			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER)) {
 				res.sendRedirect(req.getContextPath() + HOME);
 			} else if (uri.endsWith(HOME) || uri.endsWith(ROOT) || uri.endsWith(ABOUT) || uri.endsWith(PORTFOLIO)
-					|| uri.endsWith(BUY) || uri.endsWith(SELL)) {
+					|| uri.endsWith(BUY) || uri.endsWith(SELL)|| uri.endsWith(PASSWORD)) {
 				chain.doFilter(request, response);
 			} else if (uri.endsWith(DASHBOARD) || uri.endsWith(AUCTION) || uri.endsWith(USER)) {
 				res.sendRedirect(req.getContextPath() + HOME);

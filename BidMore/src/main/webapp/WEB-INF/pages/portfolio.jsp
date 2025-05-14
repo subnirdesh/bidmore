@@ -22,6 +22,32 @@ s<%@ page language="java" contentType="text/html; charset=UTF-8"
 	<%-- Header --%>
 	<jsp:include page="header.jsp" />
 
+
+	<div class="message-container">
+
+		<!-- Display error message if available -->
+		<c:if test="${not empty error}">
+			<div class="message-box error-container">
+				<span class="alert-icon">!</span>
+				<p class="error-text">${error}</p>
+				<button class="close-btn"
+					onclick="this.parentElement.style.display='none'">&times;</button>
+			</div>
+		</c:if>
+
+		<!-- Display success message if available -->
+		<c:if test="${not empty success}">
+			<div class=" message-box success-container">
+				<span class="success-icon">✓</span>
+				<p class="success-text">${success}</p>
+				<button class="close-btn"
+					onclick="this.parentElement.style.display='none'">&times;</button>
+			</div>
+
+		</c:if>
+
+	</div>
+
 	<div class="main-container">
 		<div class="content-container">
 			<header class="page-header">
@@ -52,7 +78,7 @@ s<%@ page language="java" contentType="text/html; charset=UTF-8"
 				<div class="profile-actions hidden">
 					<label for="image-upload" class="btn upload-btn"> <i
 						class="fas fa-camera"></i> Upload New Photo
-					</label> <input type="file" id="image-upload" name="image" accept="image/*"
+					</label> <input type="file" id="image-upload" name="image"
 						style="display: none;">
 				</div>
 			</div>
@@ -60,8 +86,8 @@ s<%@ page language="java" contentType="text/html; charset=UTF-8"
 
 			<div class="profile-card">
 				<form id="profile-form"
-					action="${pageContext.request.contextPath}/updateProfile"
-					method="post">
+					action="${pageContext.request.contextPath}/portfolio" method="post"
+					enctype="multipart/form-data">
 
 					<div class="form-sections">
 						<section class="form-section">
@@ -82,6 +108,9 @@ s<%@ page language="java" contentType="text/html; charset=UTF-8"
 									<label for="userName">Username</label> <input type="text"
 										id="userName" name="userName" value="${user.userName}"
 										disabled>
+									<p id="username-update-message"
+										class="username-update-notice hidden">Username cannot be
+										updated.</p>
 								</div>
 								<div class="form-group">
 									<label for="birthday">Birthday</label>
@@ -114,10 +143,11 @@ s<%@ page language="java" contentType="text/html; charset=UTF-8"
 								<i class="fas fa-lock"></i> Security
 							</h3>
 							<%-- Change Password button is always visible, but fields are toggled --%>
-							<button type="button" id="change-password-btn"
-								class="btn secondary-btn">
-								<i class="fas fa-key"></i> Change Password
-							</button>
+							<a href="${pageContext.request.contextPath}/password"
+								class="btn secondary-btn" id="change-password-btn"> <i
+								class="fas fa-key"></i> Change Password
+							</a>
+
 						</section>
 					</div>
 
@@ -147,6 +177,8 @@ s<%@ page language="java" contentType="text/html; charset=UTF-8"
 	    const formActions = document.querySelector('.form-actions');
 	    const profileActions = document.querySelector('.profile-actions');
 	    const cancelBtn = document.getElementById('cancel-btn');
+	    const updateMessage = document.getElementById('username-update-message');
+
 	    // Function to toggle edit mode
 	    function toggleEditMode() {
 	        // Toggle button text
@@ -155,9 +187,10 @@ s<%@ page language="java" contentType="text/html; charset=UTF-8"
 	            // Show form actions and profile image upload option
 	            formActions.classList.remove('hidden');
 	            profileActions.classList.remove('hidden');
+	            updateMessage.classList.remove('hidden');
 	            
 	            // Enable all form fields except password fields
-	            const inputs = profileForm.querySelectorAll('input:not([id^="current-password"]):not([id^="new-password"]):not([id^="confirm-password"])');
+	            const inputs = profileForm.querySelectorAll('input:not(#userName)');
 	            inputs.forEach(input => {
 	                input.disabled = false;
 	            });
@@ -187,10 +220,7 @@ s<%@ page language="java" contentType="text/html; charset=UTF-8"
 	        toggleEditMode();
 	    });
 	    
-	    // Toggle password fields visibility
-	    changePasswordBtn.addEventListener('click', function() {
-	        passwordFields.classList.toggle('hidden');
-	    });
+	    
 	});
 	</script>
 

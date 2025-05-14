@@ -23,10 +23,10 @@ public class UserModel {
 	}
 
 
-	// Parameterized Constructor with roleID
-	public UserModel(int userId, String userName, String password, String email, String phone, LocalDate birthdate,
-			String firstName, String lastName, int roleId, Timestamp registrationDate, String status) {
-		this.userId = userId;
+
+
+	public UserModel(String userName, String password, String email, String phone, LocalDate birthdate, String firstName,
+			String lastName,String imageUrl) {
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
@@ -34,15 +34,12 @@ public class UserModel {
 		this.birthDate = birthdate;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.role = new RoleModel(roleId, null); // Create Role with just the ID
-		this.registrationDate = registrationDate;
-		this.status = status;
+		this.imageUrl=imageUrl;
 	}
-
-	public UserModel(String userName, String password, String email, String phone, LocalDate birthdate, String firstName,
+	
+	public UserModel(String userName, String email, String phone, LocalDate birthdate, String firstName,
 			String lastName,String imageUrl) {
 		this.userName = userName;
-		this.password = password;
 		this.email = email;
 		this.phone = phone;
 		this.birthDate = birthdate;
