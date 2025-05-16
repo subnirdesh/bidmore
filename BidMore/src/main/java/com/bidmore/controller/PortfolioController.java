@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 import com.bidmore.model.UserModel;
+import com.bidmore.services.LoginService;
 import com.bidmore.services.PortfolioService;
 import com.bidmore.services.RegisterService;
 import com.bidmore.util.ImageUtil;
 import com.bidmore.util.PasswordUtil;
+import com.bidmore.util.RedirectUtil;
 import com.bidmore.util.SessionUtil;
 import com.bidmore.util.ValidationUtil;
 
@@ -40,12 +42,14 @@ public class PortfolioController extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 	
+	
 	@Override
 	public void init() throws ServletException {
-		// Initializing dependencies in init()
+		// Initialize dependencies in init()
 		this.portfolioService = new PortfolioService();
-		this.registerService=new RegisterService();
+		this.registerService = new RegisterService();
 	}
+	
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

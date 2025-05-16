@@ -39,10 +39,7 @@ public class LoginService {
 			System.out.println("Connection Error!");
 			return null;
 		}
-		
-		
-		
-	  
+	
 		
 		String query ="SELECT user_name,password FROM users WHERE user_name=?";
 		try(PreparedStatement stmt =dbConn.prepareStatement(query)){

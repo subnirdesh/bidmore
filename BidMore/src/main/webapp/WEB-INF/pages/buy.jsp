@@ -48,19 +48,26 @@
 
 		</div>
 
-		<div class="filters">
-			<button class="filter-button">
-				<span>Filter</span>
-			</button>
-
-			<div class="dropdown-filter">
-				<span>Condition</span> <span class="dropdown-icon">▼</span>
-			</div>
-
-			<div class="dropdown-filter">
-				<span>Price</span> <span class="dropdown-icon">▼</span>
-			</div>
+		<!-- Category Filter Buttons -->
+		<div class="category-filters">
+			<a href="${pageContext.request.contextPath}/buy"
+				class="filter-button ${empty param.category ? 'all active' : 'all'}">All
+				Items</a> <a
+				href="${pageContext.request.contextPath}/buy?category=Fashion"
+				class="filter-button ${param.category == 'Fashion' ? 'active' : ''}">Fashion</a>
+			<a href="${pageContext.request.contextPath}/buy?category=Electronics"
+				class="filter-button ${param.category == 'Electronics' ? 'active' : ''}">Electronics</a>
+			<a
+				href="${pageContext.request.contextPath}/buy?category=Home and Kitchen"
+				class="filter-button ${param.category == 'Home and Kitchen' ? 'active' : ''}">Home
+				& Kitchen</a> <a
+				href="${pageContext.request.contextPath}/buy?category=Collectibles and Art"
+				class="filter-button ${param.category == 'Collectibles and Art' ? 'active' : ''}">Collectibles
+				& Art</a> <a
+				href="${pageContext.request.contextPath}/buy?category=Motor"
+				class="filter-button ${param.category == 'Motor' ? 'active' : ''}">Motor</a>
 		</div>
+
 
 		<div class="product-listings">
 			<c:forEach items="${auctions}" var="auction">

@@ -9,7 +9,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class RedirectUtil {
 	
-	public void redirect(String msgType,String message,String redirectPage, HttpServletRequest req, HttpServletResponse resp ) throws ServletException, IOException {
+	public void redirect(String msgType,String message,String redirectPage, 
+			HttpServletRequest req, HttpServletResponse resp ) throws ServletException, IOException {
 		req.setAttribute(msgType, message);
 		req.getRequestDispatcher(redirectPage).forward(req, resp);
 	}

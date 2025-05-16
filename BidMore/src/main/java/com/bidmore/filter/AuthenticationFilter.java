@@ -2,6 +2,7 @@ package com.bidmore.filter;
 
 import java.io.IOException;
 
+
 import com.bidmore.util.CookieUtil;
 import com.bidmore.util.SessionUtil;
 
@@ -15,16 +16,19 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+
+
 @WebFilter(asyncSupported = true, urlPatterns = "/*")
 public class AuthenticationFilter implements Filter {
 
+	 
+	
 	private static final String LOGIN = "/login";
 	private static final String LOGOUT = "/logout";
 	private static final String REGISTER = "/registration";
 	private static final String HOME = "/home";
 	private static final String ROOT = "/";
 	private static final String DASHBOARD = "/dashboard";
-	private static final String AUCTION = "/auction";
 	private static final String USER = "/user";
 	private static final String ABOUT = "/about";
 	private static final String PORTFOLIO = "/portfolio";
@@ -56,7 +60,7 @@ public class AuthenticationFilter implements Filter {
 			// Admin is logged in
 			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER)) {
 				res.sendRedirect(req.getContextPath() + DASHBOARD);
-			} else if (uri.endsWith(DASHBOARD) || uri.endsWith(AUCTION) || uri.endsWith(USER) || uri.endsWith(HOME)
+			} else if (uri.endsWith(DASHBOARD)  || uri.endsWith(USER) || uri.endsWith(HOME)
 					|| uri.endsWith(ROOT)||uri.endsWith(LOGOUT)) {
 				chain.doFilter(request, response);
 			} else if (uri.endsWith(SELL) || uri.endsWith(BUY)) {
@@ -69,9 +73,9 @@ public class AuthenticationFilter implements Filter {
 			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER)) {
 				res.sendRedirect(req.getContextPath() + HOME);
 			} else if (uri.endsWith(HOME) || uri.endsWith(ROOT) || uri.endsWith(ABOUT) || uri.endsWith(PORTFOLIO)
-					|| uri.endsWith(BUY) || uri.endsWith(SELL)|| uri.endsWith(PASSWORD)) {
+					|| uri.endsWith(BUY) || uri.endsWith(SELL)|| uri.endsWith(PASSWORD) || uri.endsWith(LOGOUT)) {
 				chain.doFilter(request, response);
-			} else if (uri.endsWith(DASHBOARD) || uri.endsWith(AUCTION) || uri.endsWith(USER)) {
+			} else if (uri.endsWith(DASHBOARD) || uri.endsWith(USER)) {
 				res.sendRedirect(req.getContextPath() + HOME);
 			} else {
 				res.sendRedirect(req.getContextPath() + HOME);

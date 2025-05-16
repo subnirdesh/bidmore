@@ -1,7 +1,7 @@
 package com.bidmore.model;
 
-import java.security.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class UserModel {
 	private int userId;
@@ -13,7 +13,7 @@ public class UserModel {
 	private String firstName;
 	private String lastName;
 	private RoleModel role;
-	private Timestamp registrationDate;
+	private LocalDateTime registrationDate;
 	private String status; // "active" , "inactive", "deleted", "locked"
 	private String imageUrl;
 
@@ -59,6 +59,21 @@ public class UserModel {
 		this.lastName = lastName;
 		this.imageUrl=imageUrl;
 	}
+	
+	public UserModel(int userId,String firstName,String lastName,String userName, LocalDate birthdate, String email, String phone,LocalDateTime registrationDate,String status
+			) {
+	this.userId=userId;
+	this.userName = userName;
+	this.email = email;
+	this.phone = phone;
+	this.birthDate = birthdate;
+	this.firstName = firstName;
+	this.lastName = lastName;
+	this.status = status;
+	this.registrationDate = registrationDate;
+	
+
+}
 	
 	public UserModel(String userName,String password) {
 		this.userName=userName;
@@ -152,11 +167,11 @@ public class UserModel {
 		}
 	}
 
-	public Timestamp getRegistrationDate() {
+	public LocalDateTime getRegistrationDate() {
 		return registrationDate;
 	}
 
-	public void setRegistrationDate(Timestamp registrationDate) {
+	public void setRegistrationDate(LocalDateTime registrationDate) {
 		this.registrationDate = registrationDate;
 	}
 

@@ -48,10 +48,11 @@
 						<p class="subtitle">A modern marketplace connecting sellers
 							and collectors. Simple, transparent, and secure.</p>
 
-						<form class="search-form">
+						<form action="${pageContext.request.contextPath}/buy"
+							method="get" >
 							<div class="input-wrapper">
 								<i class="fas fa-search search-icon"></i> <input type="search"
-									name="query" placeholder="What are you looking for?" required
+									name="query" placeholder="What are you looking for?" 
 									aria-label="Search Auctions">
 								<button type="submit" class="search-button">Search</button>
 							</div>
@@ -59,9 +60,8 @@
 
 						<div class="cta-container">
 							<span class="cta-divider">or</span> <a
-								href="${pageContext.request.contextPath}/sell/start"
-								class="btn-sell"> List Your Item <i
-								class="fas fa-arrow-right"></i>
+								href="${pageContext.request.contextPath}/sell" class="btn-sell">
+								List Your Item <i class="fas fa-arrow-right"></i>
 							</a>
 						</div>
 					</div>
@@ -85,8 +85,9 @@
 				<h2>
 					Hot Auctions <span class="accent">Ending Soon</span>
 				</h2>
-				<a href="${pageContext.request.contextPath}/buy"
-					class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+				<a href="${pageContext.request.contextPath}/buy" class="view-all">View
+					All <i class="fas fa-arrow-right"></i>
+				</a>
 			</div>
 			<div class="auction-grid">
 				<!-- Using varStatus to track the iteration index and limit to first 4 items -->

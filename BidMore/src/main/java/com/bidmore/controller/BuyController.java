@@ -44,11 +44,24 @@ public class BuyController extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		// Getting all listing with their item and auction details
-		List<AuctionModel> auctions = buyService.getListings();
-		req.setAttribute("auctions", auctions);
-
-		req.getRequestDispatcher("WEB-INF/pages/buy.jsp").forward(req, resp);
+		String query = req.getParameter("query"); // Get search term
+	    String category = req.getParameter("category"); // Get category filter
+	    
+	    List<AuctionModel> auctions;
+	    
+	    if (query != null && !query.trim().isEmpty()) {
+	        // If user searched something, get filtered listings by search term
+	        auctions = buyService.getListingsFromSearch(query);
+	    } else if (category != null && !category.trim().isEmpty()) {
+	        // If category filter is applied
+	        auctions = buyService.getListingsByCategory(category);
+	    } else {
+	        // Otherwise get all listings
+	        auctions = buyService.getListings();
+	    }
+	    
+	    req.setAttribute("auctions", auctions);
+	    req.getRequestDispatcher("WEB-INF/pages/buy.jsp").forward(req, resp);
 
 	}
 
@@ -75,12 +88,12 @@ public class BuyController extends HttpServlet {
 				handleError(req, resp, "You cannot bid on your own listing!");
 				return;
 			}
-			
+
 			// Check if user has already placed a bid on this auction
-            if (hasUserAlreadyBid(userModel, auctionModel)) {
-                handleError(req, resp, "You have already placed a bid on this auction!");
-                return;
-            }
+			if (hasUserAlreadyBid(userModel, auctionModel)) {
+				handleError(req, resp, "You have already placed a bid on this auction!");
+				return;
+			}
 
 			BidModel bidModel = extractBidModel(req, userModel, auctionModel);
 			Boolean isPlaced = buyService.placeBid(bidModel);
@@ -175,11 +188,11 @@ public class BuyController extends HttpServlet {
 		}
 		return false;
 	}
-	
+
 	private boolean hasUserAlreadyBid(UserModel user, AuctionModel auction) {
-        // Call the service method to check if user has already bid
-        return buyService.hasUserBidOnAuction(user, auction);
-    }
+		// Call the service method to check if user has already bid
+		return buyService.hasUserBidOnAuction(user, auction);
+	}
 
 	private void handleSuccess(HttpServletRequest req, HttpServletResponse resp, String message, String redirectPage)
 			throws ServletException, IOException {

@@ -25,7 +25,7 @@ public class LogoutController extends HttpServlet {
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		CookieUtil.deleteCookie(response, "role");
+		CookieUtil.deleteCookie(response, "username");
 		SessionUtil.invalidateSession(request);
 		response.sendRedirect(request.getContextPath() + "/login");
 	}

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <div id="header">
 	<header class="header">
 		<div class="header-container">
@@ -19,10 +21,26 @@
 			</ul>
 
 			<div class="right-nav">
-				<a class="login-link"
-					href="${pageContext.request.contextPath}/login">Log in</a> <a
-					class="signup-button"
-					href="${pageContext.request.contextPath}/registration">Sign Up</a>
+				<c:choose>
+					<c:when test="${not empty sessionScope.username}">
+						<!-- User is logged in, show logout button -->
+						<form action="${pageContext.request.contextPath}/logout"
+							method="post" id="logoutForm">
+							<button type="submit" class="btn-logout">
+								 Logout
+							</button>
+						</form>
+					</c:when>
+					<c:otherwise>
+						<!-- User is not logged in, show login and signup buttons -->
+						<button class="login-button"
+							onclick="window.location.href='${pageContext.request.contextPath}/login'">Log
+							In</button>
+						<button class="signup-button"
+							onclick="window.location.href='${pageContext.request.contextPath}/registration'">Sign
+							Up</button>
+					</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
 	</header>

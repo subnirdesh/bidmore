@@ -195,8 +195,8 @@ public class SellController extends HttpServlet {
 		if (image != null && image.getSize() > 0) {
 			String originalImageName = ImageUtil.getImageNameFromPart(image);
 			String item = request.getParameter("name"); // Getting item again
-			String savedImageName = item + "_" + originalImageName; // Constructing the saved filename *exactly* as
-																	// in uploadImage
+			String savedImageName = item + "_" + originalImageName; 
+																	
 			// Settings the full path, not just the filename
 			// Setting the imageUrl to use the saved filename
 			

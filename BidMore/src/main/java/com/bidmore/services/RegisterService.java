@@ -60,7 +60,6 @@ public class RegisterService {
 		}
 	}
 
-	// Add this method to your RegisterService class
 	public boolean isUsernameDuplicate(String username) {
 		if (dbConn == null) {
 			System.err.println("Database connection is not available.");
@@ -81,7 +80,7 @@ public class RegisterService {
 		return false; // Default to false if we can't check
 	}
 
-	// Add this method to your RegisterService class
+
 	public boolean isPhoneDuplicate(String phone) {
 		if (dbConn == null) {
 			System.err.println("Database connection is not available.");
@@ -102,7 +101,7 @@ public class RegisterService {
 		return false; // Default to false if we can't check
 	}
 
-	// Add this method to your RegisterService class
+
 	public boolean isEmailDuplicate(String email) {
 		if (dbConn == null) {
 			System.err.println("Database connection is not available.");
